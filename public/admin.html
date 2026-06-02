@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Admin-Bereich | SmileNova Zahnarztpraxis</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-wrapper">
+      <a href="/" class="logo">
+        Smile<span>Nova</span>
+      </a>
+
+      <nav class="nav">
+        <a href="/">Startseite</a>
+        <a href="/booking.html">Termin buchen</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="admin-hero">
+      <div class="container">
+        <p class="section-label">Admin-Bereich</p>
+        <h1>Terminverwaltung der Zahnarztpraxis</h1>
+        <p>
+          Hier können gebuchte Termine eingesehen, storniert, abgeschlossen oder gelöscht werden.
+        </p>
+      </div>
+    </section>
+    <section class="admin-section">
+  <div class="container">
+    <div class="admin-toolbar">
+      <div>
+        <h2>Startseite Einstellungen</h2>
+        <p>Hier können Sie den nächsten freien Termin auf der Startseite ändern.</p>
+      </div>
+    </div>
+   
+
+    <form class="booking-form" id="homepageSettingsForm">
+      <div class="form-grid">
+        <div>
+          <label for="appointmentLabel">Kleine Überschrift</label>
+          <input
+            type="text"
+            id="appointmentLabel"
+            placeholder="Nächster freier Termin"
+            required
+          />
+        </div>
+
+        <div>
+          <label for="appointmentText">Termin Text</label>
+          <input
+            type="text"
+            id="appointmentText"
+            placeholder="Heute · 14:30 Uhr"
+            required
+          />
+        </div>
+
+        <div>
+          <label for="appointmentLinkText">Link Text</label>
+          <input
+            type="text"
+            id="appointmentLinkText"
+            placeholder="Diesen Termin reservieren"
+            required
+          />
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Startseite speichern
+      </button>
+
+      <p class="form-message" id="homepageSettingsMessage"></p>
+    </form>
+  </div>
+</section>
+ <div class="stats-grid">
+  <div class="stat-card">
+    <span>Total Bookings</span>
+    <strong id="totalBookings">0</strong>
+  </div>
+
+  <div class="stat-card">
+    <span>Confirmed</span>
+    <strong id="confirmedBookings">0</strong>
+  </div>
+
+  <div class="stat-card">
+    <span>Completed</span>
+    <strong id="completedBookings">0</strong>
+  </div>
+
+  <div class="stat-card">
+    <span>Cancelled</span>
+    <strong id="cancelledBookings">0</strong>
+  </div>
+</div>
+<section class="admin-section" id="editBookingSection" style="display: none;">
+  <div class="container">
+    <div class="admin-toolbar">
+      <div>
+        <h2>Termin bearbeiten</h2>
+        <p>Hier können Sie einen bestehenden Termin ändern.</p>
+      </div>
+    </div>
+
+    <form class="booking-form" id="editBookingForm">
+      <input type="hidden" id="editBookingId" />
+
+      <div class="form-grid">
+        <div>
+          <label for="editPatientName">Patient</label>
+          <input type="text" id="editPatientName" required />
+        </div>
+
+        <div>
+          <label for="editEmail">E-Mail</label>
+          <input type="email" id="editEmail" required />
+        </div>
+
+        <div>
+          <label for="editPhone">Telefon</label>
+          <input type="text" id="editPhone" required />
+        </div>
+
+        <div>
+          <label for="editService">Behandlung</label>
+          <select id="editService" required>
+            <option value="Kontrolluntersuchung">Kontrolluntersuchung</option>
+            <option value="Professionelle Zahnreinigung">Professionelle Zahnreinigung</option>
+            <option value="Zahnaufhellung">Zahnaufhellung</option>
+            <option value="Notfallbehandlung">Notfallbehandlung</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="editDoctor">Arzt</label>
+          <select id="editDoctor" required>
+            <option value="Dr. Emily Carter">Dr. Emily Carter</option>
+            <option value="Dr. Daniel Weber">Dr. Daniel Weber</option>
+            <option value="Dr. Sarah Miller">Dr. Sarah Miller</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="editBookingDate">Datum</label>
+          <input type="date" id="editBookingDate" required />
+        </div>
+
+        <div>
+          <label for="editBookingTime">Uhrzeit</label>
+          <input type="time" id="editBookingTime" required />
+        </div>
+
+        <div>
+          <label for="editNotes">Hinweis</label>
+          <input type="text" id="editNotes" />
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Änderungen speichern
+      </button>
+
+      <button type="button" class="btn btn-secondary" id="cancelEditBooking">
+        Abbrechen
+      </button>
+
+      <p class="form-message" id="editBookingMessage"></p>
+    </form>
+  </div>
+</section>
+
+    <section class="admin-section">
+      <div class="container">
+
+        <div class="admin-toolbar">
+          <div>
+            <h2>Alle Termine</h2>
+            <p id="adminCount">Termine werden geladen...</p>
+          </div>
+          <div class="admin-filters">
+  <input
+    type="text"
+    id="adminSearch"
+    placeholder="Nach Patient, E-Mail oder Telefon suchen..."
+  />
+
+  <select id="statusFilter">
+    <option value="all">Alle Status</option>
+    <option value="confirmed">Confirmed</option>
+    <option value="completed">Completed</option>
+    <option value="cancelled">Cancelled</option>
+  </select>
+</div>
+
+          <button class="btn btn-primary" id="refreshBookings">
+            Aktualisieren
+          </button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Kontakt</th>
+                <th>Behandlung</th>
+                <th>Arzt</th>
+                <th>Datum</th>
+                <th>Uhrzeit</th>
+                <th>Status</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+
+            <tbody id="bookingsTableBody">
+              <tr>
+                <td colspan="8">Termine werden geladen...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-wrapper">
+      <p>© 2026 SmileNova Zahnarztpraxis. Alle Rechte vorbehalten.</p>
+      <a href="/booking.html">Zur Terminbuchung</a>
+    </div>
+  </footer>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Termin buchen | SmileNova Zahnarztpraxis</title>
+
+  <meta
+    name="description"
+    content="Buchen Sie online einen Termin bei der SmileNova Zahnarztpraxis."
+  />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-wrapper">
+      <a href="/" class="logo">
+        Smile<span>Nova</span>
+      </a>
+
+      <nav class="nav">
+        <a href="/">Startseite</a>
+        <a href="/#services">Leistungen</a>
+        <a href="/#doctors">Ärzte</a>
+        <a href="/#contact">Kontakt</a>
+        <a href="admin.html" class="nav-btn">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="booking-hero">
+      <div class="container">
+        <p class="section-label">Online-Terminbuchung</p>
+        <h1>Wählen Sie Ihren passenden Termin.</h1>
+        <p>
+          Wählen Sie eine Behandlung, einen Arzt und ein Datum. Danach werden
+          automatisch die freien Uhrzeiten angezeigt.
+        </p>
+      </div>
+    </section>
+
+    <section class="booking-section">
+      <div class="container booking-layout">
+
+        <form class="booking-form" id="bookingForm">
+
+          <div class="form-section">
+            <h2>1. Behandlung auswählen</h2>
+
+            <label for="service">Behandlung</label>
+            <select id="service" name="service" required>
+              <option value="">Bitte auswählen</option>
+              <option value="Kontrolluntersuchung">Kontrolluntersuchung</option>
+              <option value="Professionelle Zahnreinigung">Professionelle Zahnreinigung</option>
+              <option value="Zahnaufhellung">Zahnaufhellung</option>
+              <option value="Notfallbehandlung">Notfallbehandlung</option>
+            </select>
+          </div>
+
+          <div class="form-section">
+            <h2>2. Arzt auswählen</h2>
+
+            <label for="doctor">Arzt</label>
+            <select id="doctor" name="doctor" required>
+              <option value="">Bitte auswählen</option>
+              <option value="Dr. Emily Carter">Dr. Emily Carter</option>
+              <option value="Dr. Daniel Weber">Dr. Daniel Weber</option>
+              <option value="Dr. Sarah Miller">Dr. Sarah Miller</option>
+            </select>
+          </div>
+
+          <div class="form-section">
+            <h2>3. Datum auswählen</h2>
+
+            <label for="bookingDate">Datum</label>
+            <input type="date" id="bookingDate" name="bookingDate" required />
+          </div>
+
+          <div class="form-section">
+            <h2>4. Freie Uhrzeit auswählen</h2>
+
+            <div class="slot-grid" id="slotGrid">
+              <p class="slot-placeholder">
+                Bitte wählen Sie zuerst ein Datum aus.
+              </p>
+            </div>
+
+            <input type="hidden" id="bookingTime" name="bookingTime" required />
+          </div>
+
+          <div class="form-section">
+            <h2>5. Patientendaten</h2>
+
+            <div class="form-grid">
+              <div>
+                <label for="patientName">Vollständiger Name</label>
+                <input
+                  type="text"
+                  id="patientName"
+                  name="patientName"
+                  placeholder="Max Mustermann"
+                  required
+                />
+              </div>
+
+              <div>
+                <label for="email">E-Mail</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="max@example.com"
+                  required
+                />
+              </div>
+
+              <div>
+                <label for="phone">Telefon</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="+49 170 1234567"
+                  required
+                />
+              </div>
+
+              <div>
+                <label for="notes">Hinweis optional</label>
+                <input
+                  type="text"
+                  id="notes"
+                  name="notes"
+                  placeholder="z. B. akute Schmerzen"
+                />
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary booking-submit">
+            Termin verbindlich buchen
+          </button>
+
+          <p class="form-message" id="formMessage"></p>
+        </form>
+
+        <aside class="booking-summary">
+          <h2>Ihre Terminübersicht</h2>
+
+          <div class="summary-item">
+            <span>Praxis</span>
+            <strong>SmileNova Zahnarztpraxis</strong>
+          </div>
+
+          <div class="summary-item">
+            <span>Adresse</span>
+            <strong>Mainzer Straße 24, 55543 Bad Kreuznach</strong>
+          </div>
+
+          <div class="summary-item">
+            <span>Öffnungszeiten</span>
+            <strong>Mo–Fr, 08:00–17:00 Uhr</strong>
+          </div>
+
+          <div class="summary-note">
+            <strong>Hinweis:</strong>
+            Nach erfolgreicher Buchung wird der ausgewählte Termin in der
+            Datenbank gespeichert und ist für weitere Buchungen gesperrt.
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-wrapper">
+      <p>© 2026 SmileNova Zahnarztpraxis. Alle Rechte vorbehalten.</p>
+      <a href="/">Zur Startseite</a>
+    </div>
+  </footer>
+
+  <script src="/js/booking.js"></script>
+</body>
+</html>
