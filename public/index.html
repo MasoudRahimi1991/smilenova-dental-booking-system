@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -8,13 +9,13 @@
 
   <meta
     name="description"
-    content="SmileNova Zahnarztpraxis bietet moderne Zahnbehandlungen, Prophylaxe, ästhetische Zahnmedizin und eine einfache Online-Terminbuchung."
+    content="SmileNova Zahnarztpraxis in Bad Kreuznach bietet moderne Zahnmedizin, Prophylaxe, ästhetische Zahnbehandlungen und Online-Terminbuchung."
   />
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
 
+<body>
   <header class="site-header">
     <div class="container header-wrapper">
       <a href="/" class="logo">
@@ -23,47 +24,54 @@
 
       <nav class="nav" id="mainNav">
         <a href="#about">Über uns</a>
+        <a href="#benefits">Vorteile</a>
         <a href="#services">Leistungen</a>
         <a href="#doctors">Ärzte</a>
         <a href="#contact">Kontakt</a>
-        <a href="booking.html" class="nav-btn">Termin buchen</a>
+        <a href="/booking.html" class="nav-btn">Termin buchen</a>
       </nav>
+
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
-  <span></span>
-  <span></span>
-  <span></span>
-</button>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </header>
 
   <main>
+    <section class="hero premium-hero">
+      <div class="container premium-hero-wrapper">
+        <div class="premium-hero-content">
+          <div class="hero-badge">
+            <span></span>
+            Moderne Zahnarztpraxis in Bad Kreuznach
+          </div>
 
-    <section class="hero">
-      <div class="container hero-wrapper">
-        <div class="hero-content">
-          <p class="hero-label">Moderne Zahnarztpraxis</p>
-
-          <h1>Professionelle Zahnmedizin für ein gesundes und sicheres Lächeln.</h1>
+          <h1>Moderne Zahnmedizin für ein gesundes, sicheres Lächeln.</h1>
 
           <p class="hero-text">
-            SmileNova bietet Prophylaxe, ästhetische Zahnbehandlungen und schnelle Hilfe
-            bei akuten Beschwerden – in einer modernen, ruhigen und patientenfreundlichen Umgebung.
+            SmileNova verbindet digitale Behandlungstechnik, persönliche Beratung
+            und eine ruhige Praxisatmosphäre. Buchen Sie Ihren Termin bequem online
+            und sehen Sie freie Zeiten direkt im System.
           </p>
 
           <div class="hero-actions">
-            <a href="/booking.html" class="btn btn-primary">Termin buchen</a>
+            <a href="/booking.html" class="btn btn-primary">Termin online buchen</a>
             <a href="#services" class="btn btn-secondary">Leistungen ansehen</a>
           </div>
 
-          <div class="hero-stats">
+          <div class="hero-trust-row">
             <div>
               <strong>12+</strong>
               <span>Jahre Erfahrung</span>
             </div>
+
             <div>
               <strong>4.9</strong>
               <span>Patientenbewertung</span>
             </div>
+
             <div>
               <strong>24h</strong>
               <span>Notfall-Unterstützung</span>
@@ -71,22 +79,92 @@
           </div>
         </div>
 
-        <div class="hero-card">
-          <div class="doctor-card">
-            <div class="doctor-avatar">DR</div>
+        <div class="premium-hero-visual">
+          <div class="clinic-card">
+            <div class="clinic-card-top">
+              <div class="clinic-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7.5 3C5.4 3 4 4.6 4 6.8c0 1.5.6 2.8 1.2 4 .5.9.8 1.8 1 2.8l.6 3.3C7.1 18.2 8 19 9 19c1.2 0 1.7-1.2 2.1-2.4l.4-1.4c.1-.5.8-.5 1 0l.4 1.4c.4 1.2.9 2.4 2.1 2.4 1 0 1.9-.8 2.2-2.1l.6-3.3c.2-1 .5-1.9 1-2.8.6-1.2 1.2-2.5 1.2-4C20 4.6 18.6 3 16.5 3c-1.2 0-2.1.4-2.8.8-.5.3-1 .5-1.7.5s-1.2-.2-1.7-.5C9.6 3.4 8.7 3 7.5 3Z" />
+                </svg>
+              </div>
 
-            <div>
-              <h3>Dr. Emily Carter</h3>
-              <p>Spezialistin für ästhetische Zahnmedizin</p>
+              <div>
+                <p>SmileNova Care</p>
+                <h3>Digitale Terminbuchung</h3>
+              </div>
+            </div>
+
+            <div class="appointment-preview">
+              <p id="homepageAppointmentLabel">Nächster freier Termin</p>
+              <strong id="homepageAppointmentText">Heute · 14:30 Uhr</strong>
+              <a id="homepageAppointmentLinkText" href="/booking.html">
+                Diesen Termin reservieren
+              </a>
+            </div>
+
+            <div class="clinic-doctor">
+              <div class="doctor-avatar">DR</div>
+
+              <div>
+                <h3>Dr. Emily Carter</h3>
+                <p>Ästhetische Zahnmedizin</p>
+              </div>
             </div>
           </div>
 
-         <div class="appointment-preview">
-  <p id="homepageAppointmentLabel">Nächster freier Termin</p>
-  <strong id="homepageAppointmentText">Heute · 14:30 Uhr</strong>
-  <a id="homepageAppointmentLinkText" href="/booking.html">Diesen Termin reservieren</a>
-</div>
+          <div class="floating-info-card floating-card-one">
+            <span>⏱</span>
+            <div>
+              <strong>Kurze Wartezeiten</strong>
+              <p>Klare Zeitfenster und Online-Buchung</p>
+            </div>
+          </div>
+
+          <div class="floating-info-card floating-card-two">
+            <span>✓</span>
+            <div>
+              <strong>Moderne Technik</strong>
+              <p>Digitale Abläufe und präzise Behandlung</p>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <section class="premium-benefits" id="benefits">
+      <div class="container premium-benefits-grid">
+        <article class="premium-benefit-card">
+          <div class="premium-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7.5 3C5.4 3 4 4.6 4 6.8c0 1.5.6 2.8 1.2 4 .5.9.8 1.8 1 2.8l.6 3.3C7.1 18.2 8 19 9 19c1.2 0 1.7-1.2 2.1-2.4l.4-1.4c.1-.5.8-.5 1 0l.4 1.4c.4 1.2.9 2.4 2.1 2.4 1 0 1.9-.8 2.2-2.1l.6-3.3c.2-1 .5-1.9 1-2.8.6-1.2 1.2-2.5 1.2-4C20 4.6 18.6 3 16.5 3c-1.2 0-2.1.4-2.8.8-.5.3-1 .5-1.7.5s-1.2-.2-1.7-.5C9.6 3.4 8.7 3 7.5 3Z" />
+            </svg>
+          </div>
+
+          <h3>Modernste Technik</h3>
+          <p>Digitale Abläufe und moderne Ausstattung für präzise Diagnosen und komfortable Behandlungen.</p>
+        </article>
+
+        <article class="premium-benefit-card">
+          <div class="premium-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 5a1 1 0 0 0-2 0v5c0 .3.1.5.3.7l3 3a1 1 0 0 0 1.4-1.4L13 11.6V7Z" />
+            </svg>
+          </div>
+
+          <h3>Kurze Wartezeiten</h3>
+          <p>Online-Termine, klare Zeitfenster und eine strukturierte Planung für einen angenehmen Besuch.</p>
+        </article>
+
+        <article class="premium-benefit-card">
+          <div class="premium-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4 0-7 2.1-7 5v1h14v-1c0-2.9-3-5-7-5Z" />
+            </svg>
+          </div>
+
+          <h3>Erfahrenes Team</h3>
+          <p>Freundliche Betreuung, verständliche Beratung und ein ruhiger Ablauf für Patienten jeden Alters.</p>
+        </article>
       </div>
     </section>
 
@@ -100,12 +178,13 @@
         <p>
           Unsere Praxis verbindet moderne Zahntechnik mit persönlicher Betreuung.
           Jede Behandlung beginnt mit einer verständlichen Beratung, transparenten Optionen
-          und einer ruhigen Atmosphäre für Patienten jeden Alters.
+          und einer ruhigen Atmosphäre. So wissen Patientinnen und Patienten immer,
+          welcher Behandlungsschritt als Nächstes kommt.
         </p>
       </div>
     </section>
 
-    <section class="section services" id="services">
+    <section class="section services premium-services" id="services">
       <div class="container">
         <div class="section-heading">
           <p class="section-label">Unsere Leistungen</p>
@@ -113,25 +192,25 @@
         </div>
 
         <div class="service-grid">
-          <article class="service-card">
+          <article class="service-card premium-service-card">
             <span>01</span>
             <h3>Kontrolluntersuchung</h3>
             <p>Regelmäßige Untersuchungen, um Probleme frühzeitig zu erkennen und Ihre Zahngesundheit zu erhalten.</p>
           </article>
 
-          <article class="service-card">
+          <article class="service-card premium-service-card">
             <span>02</span>
             <h3>Professionelle Zahnreinigung</h3>
             <p>Gründliche Reinigung für gesunde Zähne, frischen Atem und ein gepflegtes Lächeln.</p>
           </article>
 
-          <article class="service-card">
+          <article class="service-card premium-service-card">
             <span>03</span>
             <h3>Zahnaufhellung</h3>
             <p>Sichere ästhetische Behandlungen für sichtbar hellere Zähne und mehr Selbstvertrauen.</p>
           </article>
 
-          <article class="service-card">
+          <article class="service-card premium-service-card">
             <span>04</span>
             <h3>Notfallbehandlung</h3>
             <p>Schnelle Unterstützung bei Schmerzen, abgebrochenen Zähnen oder akuten Beschwerden.</p>
@@ -169,6 +248,35 @@
       </div>
     </section>
 
+    <section class="premium-process-section">
+      <div class="container premium-process-box">
+        <div>
+          <p class="section-label">Digitaler Ablauf</p>
+          <h2>Von der Online-Buchung bis zur Behandlung – klar, schnell und transparent.</h2>
+        </div>
+
+        <div class="process-list">
+          <div>
+            <span>01</span>
+            <strong>Behandlung auswählen</strong>
+            <p>Wählen Sie die gewünschte Leistung und den passenden Arzt.</p>
+          </div>
+
+          <div>
+            <span>02</span>
+            <strong>Freie Zeiten sehen</strong>
+            <p>Bereits gebuchte Termine werden automatisch gesperrt.</p>
+          </div>
+
+          <div>
+            <span>03</span>
+            <strong>Termin bestätigen</strong>
+            <p>Ihre Buchung wird gespeichert und im Admin-Bereich verwaltet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="cta-section">
       <div class="container cta-box">
         <div>
@@ -188,14 +296,13 @@
         </div>
 
         <div class="contact-card">
-          <p><strong>Adresse:</strong> Mainzer Straße 24, 55543 Bad Kreuznach</p>
+          <p><strong>Adresse:</strong> Muster Straße 24, 55543 Bad Kreuznach</p>
           <p><strong>Telefon:</strong> +49 671 123456</p>
           <p><strong>E-Mail:</strong> hello@smilenova.de</p>
           <p><strong>Öffnungszeiten:</strong> Mo–Fr, 08:00–17:00 Uhr</p>
         </div>
       </div>
     </section>
-
   </main>
 
   <footer class="site-footer">
@@ -204,7 +311,8 @@
       <a href="/admin.html">Admin-Bereich</a>
     </div>
   </footer>
-<script src="/js/main.js"></script>
-<script src="/js/booking.js"></script>
+
+  <script src="/js/main.js"></script>
 </body>
 </html>
+```
