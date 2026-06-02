@@ -24,3 +24,19 @@ function loadHomepageSettings() {
       console.log("Homepage settings could not be loaded.");
     });
 }
+const menuToggle = document.getElementById("menuToggle");
+const mainNav = document.getElementById("mainNav");
+
+if (menuToggle && mainNav) {
+  menuToggle.addEventListener("click", function () {
+    mainNav.classList.toggle("is-open");
+    menuToggle.classList.toggle("is-open");
+  });
+
+  mainNav.addEventListener("click", function (event) {
+    if (event.target.tagName === "A") {
+      mainNav.classList.remove("is-open");
+      menuToggle.classList.remove("is-open");
+    }
+  });
+}
