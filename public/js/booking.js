@@ -6,7 +6,7 @@ const slotGrid = document.getElementById("slotGrid");
 const bookingTimeInput = document.getElementById("bookingTime");
 const formMessage = document.getElementById("formMessage");
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://smilenova-dental-booking-system.onrender.com";
 const today = new Date().toISOString().split("T")[0];
 bookingDateInput.setAttribute("min", today);
 
