@@ -27,7 +27,7 @@ const editNotes = document.getElementById("editNotes");
 const editBookingMessage = document.getElementById("editBookingMessage");
 const cancelEditBooking = document.getElementById("cancelEditBooking");
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://smilenova-dental-booking-system.onrender.com";
 
 document.addEventListener("DOMContentLoaded", function () {
   loadBookings();
