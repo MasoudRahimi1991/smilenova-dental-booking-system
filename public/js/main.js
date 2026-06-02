@@ -7,7 +7,7 @@ const homepageAppointmentLinkText = document.getElementById("homepageAppointment
 loadHomepageSettings();
 
 function loadHomepageSettings() {
-  fetch(`${API_BASE_URL}/api/homepage-settings`)
+  fetch(`${HOME_API_BASE_URL}/api/homepage-settings`)
     .then(function (response) {
       if (!response.ok) {
         throw new Error("Failed to load homepage settings.");
