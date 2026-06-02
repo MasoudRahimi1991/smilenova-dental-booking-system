@@ -1,4 +1,4 @@
-const HOME_API_BASE_URL = "http://localhost:3000";
+const HOME_API_BASE_URL = "https://smilenova-dental-booking-system.onrender.com";
 
 const homepageAppointmentLabel = document.getElementById("homepageAppointmentLabel");
 const homepageAppointmentText = document.getElementById("homepageAppointmentText");
