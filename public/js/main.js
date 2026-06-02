@@ -1,12 +1,44 @@
 const HOME_API_BASE_URL = "https://smilenova-dental-booking-system.onrender.com";
 
-const homepageAppointmentLabel = document.getElementById("homepageAppointmentLabel");
-const homepageAppointmentText = document.getElementById("homepageAppointmentText");
-const homepageAppointmentLinkText = document.getElementById("homepageAppointmentLinkText");
+document.addEventListener("DOMContentLoaded", function () {
+  setupMobileMenu();
+  loadHomepageSettings();
+});
 
-loadHomepageSettings();
+function setupMobileMenu() {
+  const menuToggle = document.getElementById("menuToggle");
+  const mainNav = document.getElementById("mainNav");
+
+  if (!menuToggle || !mainNav) {
+    return;
+  }
+
+  menuToggle.addEventListener("click", function () {
+    mainNav.classList.toggle("is-open");
+    menuToggle.classList.toggle("is-open");
+  });
+
+  mainNav.addEventListener("click", function (event) {
+    if (event.target.tagName === "A") {
+      mainNav.classList.remove("is-open");
+      menuToggle.classList.remove("is-open");
+    }
+  });
+}
 
 function loadHomepageSettings() {
+  const homepageAppointmentLabel = document.getElementById("homepageAppointmentLabel");
+  const homepageAppointmentText = document.getElementById("homepageAppointmentText");
+  const homepageAppointmentLinkText = document.getElementById("homepageAppointmentLinkText");
+
+  if (
+    !homepageAppointmentLabel ||
+    !homepageAppointmentText ||
+    !homepageAppointmentLinkText
+  ) {
+    return;
+  }
+
   fetch(`${HOME_API_BASE_URL}/api/homepage-settings`)
     .then(function (response) {
       if (!response.ok) {
@@ -23,20 +55,4 @@ function loadHomepageSettings() {
     .catch(function () {
       console.log("Homepage settings could not be loaded.");
     });
-}
-const menuToggle = document.getElementById("menuToggle");
-const mainNav = document.getElementById("mainNav");
-
-if (menuToggle && mainNav) {
-  menuToggle.addEventListener("click", function () {
-    mainNav.classList.toggle("is-open");
-    menuToggle.classList.toggle("is-open");
-  });
-
-  mainNav.addEventListener("click", function (event) {
-    if (event.target.tagName === "A") {
-      mainNav.classList.remove("is-open");
-      menuToggle.classList.remove("is-open");
-    }
-  });
 }
