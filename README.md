@@ -1,171 +1,287 @@
 # SmileNova Dental Booking System
 
-🌐 **Live Demo**
-https://smilenova-dental-booking-system.onrender.com
+A full-stack dental appointment booking system built with Node.js, Express, PostgreSQL and Vanilla JavaScript.
 
-💻 **Source Code**
-https://github.com/MasoudRahimi1991/smilenova-dental-booking-system
+The primary goal of this project was to demonstrate backend engineering skills including authentication, authorization, API design, database architecture, security best practices, validation, and deployment workflows.
 
-🌍 **Portfolio Website**
+---
+
+# Live Demo
+
+### Portfolio Website
+
 https://masoud-dev.de
 
-📧 **Contact**
-[info@masoud-dev.de](mailto:info@masoud-dev.de)
+### Application Homepage
+
+https://smilenova-dental-booking-system.onrender.com
+
+### Admin Dashboard
+
+https://smilenova-dental-booking-system.onrender.com/admin-login.html
 
 ---
 
-## Overview
+# Demo Credentials
 
-SmileNova is a full-stack dental appointment booking system developed with Node.js, Express.js, SQLite, HTML, CSS, and JavaScript.
+This project is publicly available for demonstration purposes.
 
-The application allows patients to book appointments online while providing administrators with a complete dashboard for managing appointments, booking statuses, and homepage content.
+Visitors are welcome to test all features including appointment booking, appointment management and the administration dashboard.
 
-This project was created as a portfolio project to demonstrate full-stack web development skills, REST API design, database management, and real-world business workflow implementation.
+**Username:** demo
+
+**Password:** demo123456
 
 ---
 
-## Features
+# Project Overview
 
-### Patient Features
+SmileNova Dental Booking System is a portfolio project that simulates a real-world dental clinic booking platform.
+
+Patients can:
+
+* Select a service
+* Choose an available appointment date
+* Select a free time slot
+* Submit an appointment request
+
+Administrators can:
+
+* Log in securely
+* Manage bookings
+* Update appointment statuses
+* Edit bookings
+* Delete bookings
+* View booking statistics
+* Manage homepage content
+
+The project was intentionally developed with a strong focus on backend architecture rather than frontend complexity.
+
+The frontend remains lightweight and simple because the primary objective of this project is to showcase backend development skills.
+
+The backend architecture was designed to be scalable and can easily support additional frontend pages, mobile applications or third-party integrations in the future.
+
+---
+
+# Key Features
+
+## Patient Features
 
 * Online appointment booking
-* Doctor selection
+* Dynamic appointment slot availability
 * Service selection
-* Date and time selection
-* Real-time available slot management
-* Prevention of double bookings
-* Responsive user interface
+* Automatic double-booking prevention
+* Form validation
+* Mobile-friendly interface
 
-### Admin Features
+## Administrator Features
 
-* View all appointments
-* Edit appointments
-* Delete appointments
-* Confirm appointments
-* Complete appointments
-* Cancel appointments
-* Dashboard statistics
-* Homepage appointment management
-
-### System Features
-
-* REST API architecture
-* SQLite database integration
-* Real-time appointment availability
+* Secure administrator login
+* JWT authentication
+* Appointment management dashboard
+* Appointment editing
+* Appointment deletion
+* Booking statistics
+* Homepage content management
 * Appointment status management
-* Responsive design
-* Dynamic homepage content
 
 ---
 
-## Technologies
-
-### Frontend
-
-* HTML5
-* CSS3
-* JavaScript
-
-### Backend
+# Backend Technologies
 
 * Node.js
 * Express.js
-
-### Database
-
-* SQLite
-
-### Deployment
-
-* Render
+* PostgreSQL
 
 ---
 
-## Project Structure
+# Frontend Technologies
 
-```text
-smilenova-dental-booking-system
-│
-├── database
-├── public
-│   ├── css
-│   ├── js
-│   ├── index.html
-│   ├── booking.html
-│   └── admin.html
-│
-├── server.js
-├── package.json
-└── README.md
-```
+* HTML5
+* CSS3
+* Vanilla JavaScript
 
-## API Endpoints
+---
 
-### Public Routes
+# Security Features
+
+The project includes multiple layers of security commonly used in production environments.
+
+### Authentication & Authorization
+
+* JWT Authentication
+* Protected Admin Routes
+* Token Verification Middleware
+* Role-Based Access Control
+
+### Password Security
+
+* bcrypt Password Hashing
+* Secure Password Verification
+
+### Input Validation
+
+* Server-Side Validation
+* Input Sanitization
+* Dangerous Input Detection
+* Unknown Field Protection
+
+### API Protection
+
+* Express Rate Limiting
+* Request Slowdown Protection
+* Request Size Limiting
+
+### Security Middleware
+
+* Helmet Security Headers
+* CORS Protection
+* XSS Protection
+
+### Database Security
+
+* Parameterized SQL Queries
+* SQL Injection Protection
+* Secure Database Validation
+
+---
+
+# REST API Endpoints
+
+## Public Endpoints
 
 ```http
-GET /api/slots
-POST /api/bookings
-GET /api/homepage-settings
+GET    /api/health
+GET    /api/slots
+POST   /api/bookings
+GET    /api/homepage-settings
 ```
 
-### Admin Routes
+## Protected Endpoints
 
 ```http
-GET /api/admin/bookings
-PUT /api/admin/bookings/:id
-PATCH /api/admin/bookings/:id/status
+POST   /api/admin/login
+
+GET    /api/admin/bookings
+GET    /api/admin/bookings/stats
+
+PATCH  /api/admin/bookings/:id/status
+
+PUT    /api/admin/bookings/:id
+
 DELETE /api/admin/bookings/:id
-PUT /api/homepage-settings
-```
 
-## Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/MasoudRahimi1991/smilenova-dental-booking-system.git
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start the application:
-
-```bash
-node server.js
-```
-
-Open:
-
-```text
-http://localhost:3000
+PUT    /api/homepage-settings
 ```
 
 ---
 
-## Future Improvements
+# Database Structure
 
-* User authentication
+## Bookings Table
+
+Stores:
+
+* Patient Name
+* Email Address
+* Phone Number
+* Selected Service
+* Appointment Date
+* Appointment Time
+* Notes
+* Booking Status
+* Creation Date
+* Last Update Date
+
+## Homepage Settings Table
+
+Stores dynamic homepage content:
+
+* Appointment Label
+* Appointment Text
+* Appointment Button Text
+
+---
+
+# Automatic Database Initialization
+
+The application automatically creates required database tables and indexes during startup if they do not already exist.
+
+This simplifies deployment and allows the application to run immediately after installation.
+
+---
+
+# Project Architecture
+
+The application follows a REST API architecture.
+
+Frontend and backend are separated logically.
+
+The frontend communicates with the backend exclusively through API endpoints.
+
+This approach allows the backend to remain reusable for:
+
+* Future React applications
+* Future Vue applications
+* Mobile applications
+* Third-party integrations
+* Additional frontend pages
+
+without requiring major backend changes.
+
+---
+
+# Purpose Of The Project
+
+This project was created primarily as a backend portfolio project.
+
+The main focus was:
+
+* Backend Development
+* REST API Design
+* Authentication
+* Authorization
+* PostgreSQL Integration
+* Security Best Practices
+* Database Design
+* Production Deployment
+* Real-World Application Structure
+
+The frontend was intentionally kept simple because the goal was to demonstrate backend engineering skills rather than frontend design.
+
+---
+
+# Future Improvements
+
+Potential future enhancements include:
+
 * Email notifications
-* PostgreSQL migration
+* Password reset system
+* Patient accounts
+* Appointment reminders
 * Calendar integration
-* Multi-user admin roles
-* Advanced reporting
+* Multi-language support
+* File uploads
+* Multi-clinic support
+* Mobile application integration
+* Advanced analytics dashboard
 
 ---
 
-## Author
+# Author
 
-**Masoud Rahimi**
+Masoud Rahimi
 
-Backend Developer
+Portfolio Website:
 
-🌍 https://masoud-dev.de
+https://masoud-dev.de
 
-📧 [info@masoud-dev.de](mailto:info@masoud-dev.de)
+GitHub:
 
-💻 https://github.com/MasoudRahimi1991
+https://github.com/MasoudRahimi1991
+
+---
+
+# License
+
+This project is intended for educational, portfolio and demonstration purposes.
