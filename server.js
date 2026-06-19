@@ -945,10 +945,14 @@ app.use(function (req, res) {
 });
 
 app.use(function (error, req, res, next) {
-  res.status(500).json({
-    success: false,
-    message: "Internal server error."
-  });
+
+    console.error("GLOBAL ERROR:");
+    console.error(error);
+
+    res.status(500).json({
+        success: false,
+        message: error.message
+    });
 });
 
 async function startServer() {
