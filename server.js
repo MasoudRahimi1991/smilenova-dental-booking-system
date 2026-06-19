@@ -948,13 +948,11 @@ app.use(function (req, res) {
 });
 
 app.use(function (error, req, res, next) {
-
-    console.error("GLOBAL ERROR:");
-    console.error(error);
+    console.error("Global error:", error);
 
     res.status(500).json({
         success: false,
-        message: error.message
+        message: "Internal server error."
     });
 });
 
