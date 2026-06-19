@@ -30,7 +30,7 @@ Visitors are welcome to test all features including appointment booking, appoint
 
 **Username:** demo
 
-**Password:** demo123456
+**Password:** demo1234
 
 ---
 
