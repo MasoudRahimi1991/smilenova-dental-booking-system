@@ -986,6 +986,30 @@ VALUES (
 )
 ON CONFLICT (id) DO NOTHING
 `);
+await pool.query(`
+CREATE TABLE IF NOT EXISTS bookings (
+    id SERIAL PRIMARY KEY,
+    patient_name VARCHAR(60) NOT NULL,
+    email VARCHAR(120) NOT NULL,
+    phone VARCHAR(30) NOT NULL,
+    service VARCHAR(80) NOT NULL,
+    booking_date DATE NOT NULL,
+    booking_time TIME NOT NULL,
+    notes VARCHAR(500),
+    status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+`);
+await pool.query(`
+CREATE INDEX IF NOT EXISTS idx_bookings_date_time
+ON bookings (booking_date, booking_time)
+`);
+
+await pool.query(`
+CREATE INDEX IF NOT EXISTS idx_bookings_status
+ON bookings (status)
+`);
 
     app.listen(PORT, function () {
       console.log(`Server is running on port ${PORT}`);
