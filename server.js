@@ -961,6 +961,31 @@ app.use(function (error, req, res, next) {
 async function startServer() {
   try {
     await pool.query("SELECT NOW()");
+    await pool.query(`
+CREATE TABLE IF NOT EXISTS homepage_settings (
+    id INTEGER PRIMARY KEY,
+    appointment_label VARCHAR(80) NOT NULL,
+    appointment_text VARCHAR(120) NOT NULL,
+    appointment_link_text VARCHAR(80) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+`);
+await pool.query(`
+INSERT INTO homepage_settings (
+    id,
+    appointment_label,
+    appointment_text,
+    appointment_link_text
+)
+VALUES (
+    1,
+    'Nächster freier Termin',
+    'Heute - 13:30 Uhr',
+    'Diesen Termin reservieren'
+)
+ON CONFLICT (id) DO NOTHING
+`);
 
     app.listen(PORT, function () {
       console.log(`Server is running on port ${PORT}`);
