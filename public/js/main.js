@@ -1,36 +1,27 @@
-const HOME_API_BASE_URL = "https://smilenova-dental-booking-system.onrender.com";
+const menuToggle = document.getElementById("menuToggle");
+const mainNav = document.getElementById("mainNav");
 
-document.addEventListener("DOMContentLoaded", function () {
-  setupMobileMenu();
-  loadHomepageSettings();
-});
-
-function setupMobileMenu() {
-  const menuToggle = document.getElementById("menuToggle");
-  const mainNav = document.getElementById("mainNav");
-
-  if (!menuToggle || !mainNav) {
-    return;
-  }
-
+if (menuToggle && mainNav) {
   menuToggle.addEventListener("click", function () {
     mainNav.classList.toggle("is-open");
     menuToggle.classList.toggle("is-open");
   });
-
-  mainNav.addEventListener("click", function (event) {
-    if (event.target.tagName === "A") {
-      mainNav.classList.remove("is-open");
-      menuToggle.classList.remove("is-open");
-    }
-  });
 }
 
-function loadHomepageSettings() {
-  const homepageAppointmentLabel = document.getElementById("homepageAppointmentLabel");
-  const homepageAppointmentText = document.getElementById("homepageAppointmentText");
-  const homepageAppointmentLinkText = document.getElementById("homepageAppointmentLinkText");
+const homepageAppointmentLabel =
+  document.getElementById("homepageAppointmentLabel");
 
+const homepageAppointmentText =
+  document.getElementById("homepageAppointmentText");
+
+const homepageAppointmentLinkText =
+  document.getElementById("homepageAppointmentLinkText");
+
+function safeText(value) {
+  return String(value || "");
+}
+
+async function loadHomepageSettings() {
   if (
     !homepageAppointmentLabel ||
     !homepageAppointmentText ||
@@ -39,20 +30,25 @@ function loadHomepageSettings() {
     return;
   }
 
-  fetch(`${HOME_API_BASE_URL}/api/homepage-settings`)
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Failed to load homepage settings.");
-      }
+  try {
+    const response = await fetch("/api/homepage-settings");
+    const data = await response.json();
 
-      return response.json();
-    })
-    .then(function (settings) {
-      homepageAppointmentLabel.textContent = settings.appointment_label;
-      homepageAppointmentText.textContent = settings.appointment_text;
-      homepageAppointmentLinkText.textContent = settings.appointment_link_text;
-    })
-    .catch(function () {
-      console.log("Homepage settings could not be loaded.");
-    });
+    if (!response.ok || !data.success || !data.settings) {
+      return;
+    }
+
+    homepageAppointmentLabel.textContent =
+      safeText(data.settings.appointment_label);
+
+    homepageAppointmentText.textContent =
+      safeText(data.settings.appointment_text);
+
+    homepageAppointmentLinkText.textContent =
+      safeText(data.settings.appointment_link_text);
+  } catch (error) {
+    console.error("Homepage settings could not be loaded.");
+  }
 }
+
+loadHomepageSettings();

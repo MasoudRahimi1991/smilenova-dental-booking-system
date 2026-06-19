@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Admin Login | SmileNova</title>
+
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/admin-login.css" />
+</head>
+<body>
+  <main class="admin-login-page">
+    <section class="login-card">
+      <a href="/" class="login-logo">
+        Smile<span>Nova</span>
+      </a>
+
+      <p class="login-label">Admin Area</p>
+
+      <h1>Admin Login</h1>
+
+      <p class="login-text">
+        Please sign in to manage appointments and homepage settings.
+      </p>
+      <div class="demo-credentials">
+    <h3>Demo Access</h3>
+
+    <p>
+        <strong>Username:</strong> demo
+    </p>
+
+    <p>
+        <strong>Password:</strong> demo1234
+    </p>
+</div>
+
+      <form id="adminLoginForm" class="login-form" novalidate>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            autocomplete="username"
+            minlength="3"
+            maxlength="40"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="current-password"
+            minlength="8"
+            maxlength="100"
+            required
+          />
+        </div>
+
+        <div class="honeypot-field" aria-hidden="true">
+          <label for="website">Website</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            autocomplete="off"
+            tabindex="-1"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary login-button">
+          Login
+        </button>
+
+        <p id="loginMessage" class="login-message"></p>
+      </form>
+
+      <a href="/" class="back-link">Back to website</a>
+    </section>
+  </main>
+
+  <script src="/js/admin-login.js"></script>
+</body>
+</html>

@@ -1443,6 +1443,39 @@ select:focus {
 .delete-btn {
   background: #0f172a;
 }
+.admin-tabs {
+  width: min(1120px, 100%);
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.admin-tab {
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--dark);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-tab.active {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+
+.action-btn.in_progress {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.action-btn.pending {
+  background: #f1f5f9;
+  color: #334155;
+}
 
 /* Admin Responsive */
 

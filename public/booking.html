@@ -26,7 +26,7 @@
         <a href="/#services">Leistungen</a>
         <a href="/#doctors">Ärzte</a>
         <a href="/#contact">Kontakt</a>
-        <a href="admin.html" class="nav-btn">Admin</a>
+        
       </nav>
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
   <span></span>
@@ -43,8 +43,8 @@
         <p class="section-label">Online-Terminbuchung</p>
         <h1>Wählen Sie Ihren passenden Termin.</h1>
         <p>
-          Wählen Sie eine Behandlung, einen Arzt und ein Datum. Danach werden
-          automatisch die freien Uhrzeiten angezeigt.
+Wählen Sie eine Behandlung und ein Datum.
+Danach werden automatisch die freien Uhrzeiten angezeigt.
         </p>
       </div>
     </section>
@@ -67,27 +67,16 @@
             </select>
           </div>
 
+          
           <div class="form-section">
-            <h2>2. Arzt auswählen</h2>
-
-            <label for="doctor">Arzt</label>
-            <select id="doctor" name="doctor" required>
-              <option value="">Bitte auswählen</option>
-              <option value="Dr. Emily Carter">Dr. Emily Carter</option>
-              <option value="Dr. Daniel Weber">Dr. Daniel Weber</option>
-              <option value="Dr. Sarah Miller">Dr. Sarah Miller</option>
-            </select>
-          </div>
-
-          <div class="form-section">
-            <h2>3. Datum auswählen</h2>
+            <h2>2. Datum auswählen</h2>
 
             <label for="bookingDate">Datum</label>
             <input type="date" id="bookingDate" name="bookingDate" required />
           </div>
 
           <div class="form-section">
-            <h2>4. Freie Uhrzeit auswählen</h2>
+            <h2>3. Freie Uhrzeit auswählen</h2>
 
             <div class="slot-grid" id="slotGrid">
               <p class="slot-placeholder">
@@ -99,7 +88,7 @@
           </div>
 
           <div class="form-section">
-            <h2>5. Patientendaten</h2>
+            <h2>4. Patientendaten</h2>
 
             <div class="form-grid">
               <div>
@@ -146,6 +135,16 @@
               </div>
             </div>
           </div>
+          <div style="display:none;">
+    <label for="website">Website</label>
+    <input
+        type="text"
+        id="website"
+        name="website"
+        autocomplete="off"
+        tabindex="-1"
+    />
+</div>
 
           <button type="submit" class="btn btn-primary booking-submit">
             Termin verbindlich buchen
@@ -164,7 +163,7 @@
 
           <div class="summary-item">
             <span>Adresse</span>
-            <strong>Mainzer Straße 24, 55543 Bad Kreuznach</strong>
+            <strong>Muster Straße 24, 55543 Bad Kreuznach</strong>
           </div>
 
           <div class="summary-item">
@@ -187,6 +186,12 @@
   <footer class="site-footer">
     <div class="container footer-wrapper">
       <p>© 2026 SmileNova Zahnarztpraxis. Alle Rechte vorbehalten.</p>
+      <p>
+  Website entwickelt von
+  <a href="https://masoud-dev.de" target="_blank" rel="noopener noreferrer">
+    Masoud-DEV.de
+  </a>
+</p>
       <a href="/">Zur Startseite</a>
     </div>
   </footer>

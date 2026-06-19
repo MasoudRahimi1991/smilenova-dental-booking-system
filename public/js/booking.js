@@ -1,167 +1,270 @@
 const bookingForm = document.getElementById("bookingForm");
 const serviceInput = document.getElementById("service");
-const doctorInput = document.getElementById("doctor");
 const bookingDateInput = document.getElementById("bookingDate");
-const slotGrid = document.getElementById("slotGrid");
 const bookingTimeInput = document.getElementById("bookingTime");
+const slotGrid = document.getElementById("slotGrid");
 const formMessage = document.getElementById("formMessage");
 
-const API_BASE_URL = "https://smilenova-dental-booking-system.onrender.com";
-const today = new Date().toISOString().split("T")[0];
-bookingDateInput.setAttribute("min", today);
+const patientNameInput = document.getElementById("patientName");
+const emailInput = document.getElementById("email");
+const phoneInput = document.getElementById("phone");
+const notesInput = document.getElementById("notes");
+const websiteInput = document.getElementById("website");
 
-bookingDateInput.addEventListener("change", function () {
-  const selectedDate = bookingDateInput.value;
-    const selectedDay = new Date(selectedDate).getDay();
+const allowedServices = [
+  "Kontrolluntersuchung",
+  "Professionelle Zahnreinigung",
+  "Zahnaufhellung",
+  "Notfallbehandlung"
+];
 
-  if (selectedDay === 0 || selectedDay === 6) {
-    bookingTimeInput.value = "";
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-    slotGrid.innerHTML = `
-      <p class="slot-placeholder">
-        Die Praxis ist am Wochenende geschlossen.
-      </p>
-    `;
+function normalizeText(value) {
+  return String(value || "").trim();
+}
 
-    return;
-  }
+function containsDangerousInput(value) {
+  const patterns = [
+    /<script/i,
+    /<\/script/i,
+    /javascript:/i,
+    /onerror=/i,
+    /onload=/i,
+    /onclick=/i,
+    /<iframe/i,
+    /<object/i,
+    /<embed/i,
+    /<svg/i,
+    /data:text\/html/i
+  ];
 
-  bookingTimeInput.value = "";
+  return patterns.some(function (pattern) {
+    return pattern.test(String(value));
+  });
+}
 
-  if (!selectedDate) {
-    slotGrid.innerHTML = `
-      <p class="slot-placeholder">
-        Bitte wählen Sie zuerst ein Datum aus.
-      </p>
-    `;
-    return;
-  }
+function setMessage(message, type) {
+  formMessage.textContent = escapeHtml(message);
+  formMessage.className = `form-message ${type}`;
+}
 
-  loadAvailableSlots(selectedDate);
-});
+function setMinDate() {
+  const today = new Date().toISOString().split("T")[0];
+  bookingDateInput.min = today;
+}
 
-function loadAvailableSlots(selectedDate) {
-  slotGrid.innerHTML = `
-    <p class="slot-placeholder">
-      Freie Uhrzeiten werden geladen...
-    </p>
-  `;
+function renderPlaceholder(message) {
+  slotGrid.innerHTML = "";
 
-  fetch(`${API_BASE_URL}/api/slots?date=${selectedDate}`)
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Failed to load slots.");
-      }
+  const paragraph = document.createElement("p");
+  paragraph.className = "slot-placeholder";
+  paragraph.textContent = message;
 
-      return response.json();
-    })
-    .then(function (slots) {
-      renderSlots(slots);
-    })
-    .catch(function () {
-      slotGrid.innerHTML = `
-        <p class="slot-placeholder">
-          Die freien Uhrzeiten konnten nicht geladen werden.
-        </p>
-      `;
-    });
+  slotGrid.appendChild(paragraph);
+}
+
+function clearSelectedSlots() {
+  document.querySelectorAll(".slot-btn").forEach(function (button) {
+    button.classList.remove("selected");
+  });
 }
 
 function renderSlots(slots) {
   slotGrid.innerHTML = "";
+  bookingTimeInput.value = "";
+
+  if (!Array.isArray(slots) || slots.length === 0) {
+    renderPlaceholder("Keine freien Zeiten gefunden.");
+    return;
+  }
 
   slots.forEach(function (slot) {
     const button = document.createElement("button");
 
     button.type = "button";
     button.textContent = slot.time;
-    button.classList.add("slot-btn");
+    button.className = "slot-btn";
 
     if (!slot.available) {
-      button.classList.add("disabled");
       button.disabled = true;
+      button.classList.add("disabled");
+      button.title = "Dieser Termin ist nicht verfügbar.";
     }
 
     button.addEventListener("click", function () {
-      selectSlot(button, slot.time);
+      if (!slot.available) {
+        return;
+      }
+
+      clearSelectedSlots();
+
+      button.classList.add("selected");
+      bookingTimeInput.value = slot.time;
     });
 
     slotGrid.appendChild(button);
   });
 }
 
-function selectSlot(clickedButton, selectedTime) {
-  const allSlotButtons = document.querySelectorAll(".slot-btn");
+async function loadAvailableSlots() {
+  const selectedDate = normalizeText(bookingDateInput.value);
 
-  allSlotButtons.forEach(function (button) {
-    button.classList.remove("active");
-  });
+  bookingTimeInput.value = "";
 
-  clickedButton.classList.add("active");
-  bookingTimeInput.value = selectedTime;
-}
-
-bookingForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  if (!bookingTimeInput.value) {
-    showMessage("Bitte wählen Sie eine freie Uhrzeit aus.", "error");
+  if (!selectedDate) {
+    renderPlaceholder("Bitte wählen Sie zuerst ein Datum aus.");
     return;
   }
 
-  const bookingData = {
-    patientName: document.getElementById("patientName").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    phone: document.getElementById("phone").value.trim(),
-    service: serviceInput.value,
-    doctor: doctorInput.value,
-    bookingDate: bookingDateInput.value,
-    bookingTime: bookingTimeInput.value,
-    notes: document.getElementById("notes").value.trim()
-  };
+  if (containsDangerousInput(selectedDate)) {
+    renderPlaceholder("Ungültiges Datum.");
+    return;
+  }
 
-  createBooking(bookingData);
+  try {
+    renderPlaceholder("Freie Zeiten werden geladen...");
+
+    const response = await fetch(`/api/slots?date=${encodeURIComponent(selectedDate)}`);
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      renderPlaceholder(data.message || "Zeiten konnten nicht geladen werden.");
+      return;
+    }
+
+    renderSlots(data.slots);
+  } catch (error) {
+    renderPlaceholder("Serververbindung fehlgeschlagen.");
+  }
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPhone(phone) {
+  return /^[0-9+\-\s()]{6,30}$/.test(phone);
+}
+
+function validateBookingForm() {
+  const service = normalizeText(serviceInput.value);
+  const bookingDate = normalizeText(bookingDateInput.value);
+  const bookingTime = normalizeText(bookingTimeInput.value);
+  const patientName = normalizeText(patientNameInput.value);
+  const email = normalizeText(emailInput.value);
+  const phone = normalizeText(phoneInput.value);
+  const notes = normalizeText(notesInput.value);
+  const website = websiteInput ? normalizeText(websiteInput.value) : "";
+
+  if (website !== "") {
+    return "Spam detected.";
+  }
+
+  const allTextValues = [
+    service,
+    bookingDate,
+    bookingTime,
+    patientName,
+    email,
+    phone,
+    notes
+  ];
+
+  if (allTextValues.some(containsDangerousInput)) {
+    return "Ungültige Eingabe erkannt.";
+  }
+
+  if (!allowedServices.includes(service)) {
+    return "Bitte wählen Sie eine gültige Behandlung aus.";
+  }
+
+  if (!bookingDate) {
+    return "Bitte wählen Sie ein Datum aus.";
+  }
+
+  if (!bookingTime) {
+    return "Bitte wählen Sie eine Uhrzeit aus.";
+  }
+
+  if (patientName.length < 2 || patientName.length > 60) {
+    return "Der Name muss zwischen 2 und 60 Zeichen lang sein.";
+  }
+
+  if (!isValidEmail(email) || email.length > 120) {
+    return "Bitte geben Sie eine gültige E-Mail-Adresse ein.";
+  }
+
+  if (!isValidPhone(phone)) {
+    return "Bitte geben Sie eine gültige Telefonnummer ein.";
+  }
+
+  if (notes.length > 500) {
+    return "Der Hinweis darf maximal 500 Zeichen lang sein.";
+  }
+
+  return null;
+}
+
+function getBookingPayload() {
+  return {
+    patientName: normalizeText(patientNameInput.value),
+    email: normalizeText(emailInput.value).toLowerCase(),
+    phone: normalizeText(phoneInput.value),
+    service: normalizeText(serviceInput.value),
+    bookingDate: normalizeText(bookingDateInput.value),
+    bookingTime: normalizeText(bookingTimeInput.value),
+    notes: normalizeText(notesInput.value),
+    website: websiteInput ? normalizeText(websiteInput.value) : ""
+  };
+}
+
+bookingDateInput.addEventListener("change", loadAvailableSlots);
+
+bookingForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const validationError = validateBookingForm();
+
+  if (validationError) {
+    setMessage(validationError, "error");
+    return;
+  }
+
+  try {
+    setMessage("Termin wird gespeichert...", "info");
+
+    const response = await fetch("/api/bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(getBookingPayload())
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      setMessage(data.message || "Termin konnte nicht gespeichert werden.", "error");
+      return;
+    }
+
+    setMessage("Termin wurde erfolgreich gebucht.", "success");
+
+    bookingForm.reset();
+    bookingTimeInput.value = "";
+    renderPlaceholder("Bitte wählen Sie zuerst ein Datum aus.");
+    setMinDate();
+  } catch (error) {
+    setMessage("Serververbindung fehlgeschlagen.", "error");
+  }
 });
 
-function createBooking(bookingData) {
-  showMessage("Termin wird gespeichert...", "info");
-
-  fetch(`${API_BASE_URL}/api/bookings`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(bookingData)
-  })
-    .then(function (response) {
-      return response.json().then(function (data) {
-        if (!response.ok) {
-          throw new Error(data.message || "Booking failed.");
-        }
-
-        return data;
-      });
-    })
-    .then(function (data) {
-      showMessage(data.message, "success");
-
-      bookingForm.reset();
-      bookingTimeInput.value = "";
-
-      slotGrid.innerHTML = `
-        <p class="slot-placeholder">
-          Bitte wählen Sie zuerst ein Datum aus.
-        </p>
-      `;
-    })
-    .catch(function (error) {
-      showMessage(error.message, "error");
-    });
-}
-
-function showMessage(message, type) {
-  formMessage.textContent = message;
-
-  formMessage.classList.remove("success", "error", "info");
-  formMessage.classList.add(type);
-}
+setMinDate();

@@ -1,18 +1,50 @@
+const adminToken = localStorage.getItem("adminToken");
+
+if (!adminToken) {
+  window.location.href = "/admin-login.html";
+}
+
+const API_BASE_URL = "";
+
 const bookingsTableBody = document.getElementById("bookingsTableBody");
 const adminCount = document.getElementById("adminCount");
 const refreshBookingsButton = document.getElementById("refreshBookings");
 const adminSearch = document.getElementById("adminSearch");
 const statusFilter = document.getElementById("statusFilter");
-let allBookings = [];
+const logoutButton = document.getElementById("logoutButton");
+
 const homepageSettingsForm = document.getElementById("homepageSettingsForm");
 const appointmentLabelInput = document.getElementById("appointmentLabel");
 const appointmentTextInput = document.getElementById("appointmentText");
 const appointmentLinkTextInput = document.getElementById("appointmentLinkText");
 const homepageSettingsMessage = document.getElementById("homepageSettingsMessage");
+function clearHomepageSettingsMessage() {
+  homepageSettingsMessage.textContent = "";
+  homepageSettingsMessage.className = "form-message";
+}
+
+appointmentLabelInput.addEventListener(
+  "input",
+  clearHomepageSettingsMessage
+);
+
+appointmentTextInput.addEventListener(
+  "input",
+  clearHomepageSettingsMessage
+);
+
+appointmentLinkTextInput.addEventListener(
+  "input",
+  clearHomepageSettingsMessage
+);
+
 const totalBookings = document.getElementById("totalBookings");
+const pendingBookings = document.getElementById("pendingBookings");
 const confirmedBookings = document.getElementById("confirmedBookings");
+const inProgressBookings = document.getElementById("inProgressBookings");
 const completedBookings = document.getElementById("completedBookings");
 const cancelledBookings = document.getElementById("cancelledBookings");
+
 const editBookingSection = document.getElementById("editBookingSection");
 const editBookingForm = document.getElementById("editBookingForm");
 const editBookingId = document.getElementById("editBookingId");
@@ -20,61 +52,165 @@ const editPatientName = document.getElementById("editPatientName");
 const editEmail = document.getElementById("editEmail");
 const editPhone = document.getElementById("editPhone");
 const editService = document.getElementById("editService");
-const editDoctor = document.getElementById("editDoctor");
 const editBookingDate = document.getElementById("editBookingDate");
 const editBookingTime = document.getElementById("editBookingTime");
 const editNotes = document.getElementById("editNotes");
 const editBookingMessage = document.getElementById("editBookingMessage");
 const cancelEditBooking = document.getElementById("cancelEditBooking");
 
-const API_BASE_URL = "https://smilenova-dental-booking-system.onrender.com";
+const adminTabs = document.querySelectorAll(".admin-tab");
 
-document.addEventListener("DOMContentLoaded", function () {
-  loadBookings();
-});
+let allBookings = [];
+let currentTabStatus = "pending";
 
-refreshBookingsButton.addEventListener("click", function () {
-  loadBookings();
-});
+function authHeaders() {
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${adminToken}`
+  };
+}
 
-function loadBookings() {
+function safeText(value) {
+  return String(value || "");
+}
+
+function containsDangerousInput(value) {
+  const patterns = [
+    /<script/i,
+    /<\/script/i,
+    /javascript:/i,
+    /onerror=/i,
+    /onload=/i,
+    /onclick=/i,
+    /<iframe/i,
+    /<object/i,
+    /<embed/i,
+    /<svg/i,
+    /data:text\/html/i
+  ];
+
+  return patterns.some(function (pattern) {
+    return pattern.test(String(value));
+  });
+}
+
+function handleUnauthorized(response) {
+  if (response.status === 401 || response.status === 403) {
+    localStorage.removeItem("adminToken");
+    window.location.href = "/admin-login.html";
+    return true;
+  }
+
+  return false;
+}
+
+function setMessage(element, message, type) {
+  element.textContent = message;
+  element.className = `form-message ${type}`;
+}
+
+function formatDate(value) {
+  return value ? String(value).slice(0, 10) : "";
+}
+
+function formatTime(value) {
+  return value ? String(value).slice(0, 5) : "";
+}
+
+function getStatusLabel(status) {
+  if (status === "pending") return "Inbox";
+  if (status === "confirmed") return "Bestätigt";
+  if (status === "in_progress") return "In Bearbeitung";
+  if (status === "completed") return "Abgeschlossen";
+  if (status === "cancelled") return "Storniert";
+
+  return status;
+}
+
+function countByStatus(status) {
+  return allBookings.filter(function (booking) {
+    return booking.status === status;
+  }).length;
+}
+
+function updateDashboardStats() {
+  totalBookings.textContent = allBookings.length;
+  pendingBookings.textContent = countByStatus("pending");
+  confirmedBookings.textContent = countByStatus("confirmed");
+  inProgressBookings.textContent = countByStatus("in_progress");
+  completedBookings.textContent = countByStatus("completed");
+  cancelledBookings.textContent = countByStatus("cancelled");
+}
+
+async function loadBookings() {
   bookingsTableBody.innerHTML = `
     <tr>
-      <td colspan="8">Termine werden geladen...</td>
+      <td colspan="7">Termine werden geladen...</td>
     </tr>
   `;
 
-  fetch(`${API_BASE_URL}/api/admin/bookings`)
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Failed to load bookings.");
-      }
-
-      return response.json();
-    })
- .then(function (bookings) {
-  allBookings = bookings;
-  updateDashboardStats(bookings);
-  applyFilters();
-})
-    .catch(function () {
-      bookingsTableBody.innerHTML = `
-        <tr>
-          <td colspan="8">Termine konnten nicht geladen werden.</td>
-        </tr>
-      `;
-
-      adminCount.textContent = "Fehler beim Laden der Termine.";
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/admin/bookings`, {
+      method: "GET",
+      headers: authHeaders()
     });
+
+    if (handleUnauthorized(response)) return;
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Termine konnten nicht geladen werden.");
+    }
+
+    allBookings = Array.isArray(data.bookings) ? data.bookings : [];
+
+    updateDashboardStats();
+    applyFilters();
+  } catch (error) {
+    bookingsTableBody.innerHTML = `
+      <tr>
+        <td colspan="7">Termine konnten nicht geladen werden.</td>
+      </tr>
+    `;
+
+    adminCount.textContent = error.message;
+  }
+}
+
+function applyFilters() {
+  const searchValue = adminSearch.value.toLowerCase().trim();
+  const selectedStatus = statusFilter.value;
+
+  const filteredBookings = allBookings.filter(function (booking) {
+    const patientName = safeText(booking.patient_name).toLowerCase();
+    const email = safeText(booking.email).toLowerCase();
+    const phone = safeText(booking.phone).toLowerCase();
+
+    const matchesSearch =
+      patientName.includes(searchValue) ||
+      email.includes(searchValue) ||
+      phone.includes(searchValue);
+
+    const matchesTab =
+      currentTabStatus === "all" || booking.status === currentTabStatus;
+
+    const matchesDropdown =
+      selectedStatus === "all" || booking.status === selectedStatus;
+
+    return matchesSearch && matchesTab && matchesDropdown;
+  });
+
+  renderBookings(filteredBookings);
 }
 
 function renderBookings(bookings) {
   bookingsTableBody.innerHTML = "";
 
-  if (bookings.length === 0) {
+  if (!bookings.length) {
     bookingsTableBody.innerHTML = `
       <tr>
-        <td colspan="8">Keine Termine vorhanden.</td>
+        <td colspan="7">Keine Termine in diesem Bereich.</td>
       </tr>
     `;
 
@@ -87,298 +223,365 @@ function renderBookings(bookings) {
   bookings.forEach(function (booking) {
     const row = document.createElement("tr");
 
-    row.innerHTML = `
-      <td>
-        <strong>${booking.patient_name}</strong>
-        <br />
-        <small>${booking.notes || "Keine Hinweise"}</small>
-      </td>
-
-      <td>
-        ${booking.email}
-        <br />
-        <small>${booking.phone}</small>
-      </td>
-
-      <td>${booking.service}</td>
-      <td>${booking.doctor}</td>
-      <td>${booking.booking_date}</td>
-      <td>${booking.booking_time}</td>
-
-      <td>
-        <span class="status-badge ${booking.status}">
-          ${getStatusLabel(booking.status)}
-        </span>
-      </td>
-
-      <td>
-        <div class="admin-actions">
-          <button onclick="updateBookingStatus(${booking.id}, 'confirmed')" class="action-btn confirm">
-            Bestätigen
-          </button>
-
-          <button onclick="updateBookingStatus(${booking.id}, 'completed')" class="action-btn complete">
-            Abschließen
-          </button>
-
-          <button onclick="updateBookingStatus(${booking.id}, 'cancelled')" class="action-btn cancel">
-            Stornieren
-          </button>
-          <button onclick="openEditBooking(${booking.id})" class="action-btn edit">
-  Bearbeiten
-</button>
-
-          <button onclick="deleteBooking(${booking.id})" class="action-btn delete">
-            Löschen
-          </button>
-        </div>
-      </td>
-    `;
+    row.appendChild(createPatientCell(booking));
+    row.appendChild(createContactCell(booking));
+    row.appendChild(createTextCell(booking.service));
+    row.appendChild(createTextCell(formatDate(booking.booking_date)));
+    row.appendChild(createTextCell(formatTime(booking.booking_time)));
+    row.appendChild(createStatusCell(booking.status));
+    row.appendChild(createActionsCell(booking));
 
     bookingsTableBody.appendChild(row);
   });
 }
 
-function updateBookingStatus(bookingId, status) {
-  fetch(`${API_BASE_URL}/api/admin/bookings/${bookingId}/status`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      status: status
-    })
-  })
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Failed to update booking status.");
-      }
-
-      return response.json();
-    })
-    .then(function () {
-      loadBookings();
-    })
-    .catch(function (error) {
-      alert(error.message);
-    });
+function createTextCell(value) {
+  const cell = document.createElement("td");
+  cell.textContent = safeText(value);
+  return cell;
 }
 
-function deleteBooking(bookingId) {
-  const confirmDelete = confirm("Möchten Sie diesen Termin wirklich löschen?");
+function createPatientCell(booking) {
+  const cell = document.createElement("td");
 
-  if (!confirmDelete) {
-    return;
-  }
+  const strong = document.createElement("strong");
+  strong.textContent = safeText(booking.patient_name);
 
-  fetch(`${API_BASE_URL}/api/admin/bookings/${bookingId}`, {
-    method: "DELETE"
-  })
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Failed to delete booking.");
-      }
+  const small = document.createElement("small");
+  small.textContent = safeText(booking.notes || "Keine Hinweise");
 
-      return response.json();
-    })
-    .then(function () {
-      loadBookings();
-    })
-    .catch(function (error) {
-      alert(error.message);
-    });
+  cell.appendChild(strong);
+  cell.appendChild(document.createElement("br"));
+  cell.appendChild(small);
+
+  return cell;
 }
-adminSearch.addEventListener("input", function () {
-  applyFilters();
-});
 
-statusFilter.addEventListener("change", function () {
-  applyFilters();
-});
+function createContactCell(booking) {
+  const cell = document.createElement("td");
 
-function applyFilters() {
-  const searchValue = adminSearch.value.toLowerCase().trim();
-  const selectedStatus = statusFilter.value;
+  cell.textContent = safeText(booking.email);
+  cell.appendChild(document.createElement("br"));
 
-  let filteredBookings = allBookings.filter(function (booking) {
-    const patientName = booking.patient_name.toLowerCase();
-    const email = booking.email.toLowerCase();
-    const phone = booking.phone.toLowerCase();
+  const small = document.createElement("small");
+  small.textContent = safeText(booking.phone);
 
-    const matchesSearch =
-      patientName.includes(searchValue) ||
-      email.includes(searchValue) ||
-      phone.includes(searchValue);
+  cell.appendChild(small);
 
-    const matchesStatus =
-      selectedStatus === "all" || booking.status === selectedStatus;
+  return cell;
+}
 
-    return matchesSearch && matchesStatus;
+function createStatusCell(status) {
+  const cell = document.createElement("td");
+
+  const badge = document.createElement("span");
+  badge.className = `status-badge ${safeText(status)}`;
+  badge.textContent = getStatusLabel(status);
+
+  cell.appendChild(badge);
+
+  return cell;
+}
+
+function createActionsCell(booking) {
+  const cell = document.createElement("td");
+  const wrapper = document.createElement("div");
+
+  wrapper.className = "admin-actions";
+
+  wrapper.appendChild(createStatusButton("Inbox", "pending", booking.id));
+  wrapper.appendChild(createStatusButton("Bestätigen", "confirmed", booking.id));
+  wrapper.appendChild(createStatusButton("Bearbeiten", "in_progress", booking.id));
+  wrapper.appendChild(createStatusButton("Abschließen", "completed", booking.id));
+  wrapper.appendChild(createStatusButton("Stornieren", "cancelled", booking.id));
+  wrapper.appendChild(createEditButton(booking.id));
+  wrapper.appendChild(createDeleteButton(booking.id));
+
+  cell.appendChild(wrapper);
+
+  return cell;
+}
+
+function createStatusButton(text, status, bookingId) {
+  const button = document.createElement("button");
+
+  button.type = "button";
+  button.textContent = text;
+  button.className = `action-btn ${status}`;
+
+  button.addEventListener("click", function () {
+    updateBookingStatus(bookingId, status);
   });
 
-  renderBookings(filteredBookings);
+  return button;
 }
-loadHomepageSettings();
 
-function loadHomepageSettings() {
-  fetch(`${API_BASE_URL}/api/homepage-settings`)
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Failed to load homepage settings.");
-      }
+function createEditButton(bookingId) {
+  const button = document.createElement("button");
 
-      return response.json();
-    })
-    .then(function (settings) {
-      appointmentLabelInput.value = settings.appointment_label;
-      appointmentTextInput.value = settings.appointment_text;
-      appointmentLinkTextInput.value = settings.appointment_link_text;
-    })
-    .catch(function () {
-      homepageSettingsMessage.textContent = "Einstellungen konnten nicht geladen werden.";
+  button.type = "button";
+  button.textContent = "Daten ändern";
+  button.className = "action-btn edit";
+
+  button.addEventListener("click", function () {
+    openEditBooking(bookingId);
+  });
+
+  return button;
+}
+
+function createDeleteButton(bookingId) {
+  const button = document.createElement("button");
+
+  button.type = "button";
+  button.textContent = "Löschen";
+  button.className = "action-btn delete";
+
+  button.addEventListener("click", function () {
+    deleteBooking(bookingId);
+  });
+
+  return button;
+}
+
+async function updateBookingStatus(bookingId, status) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/admin/bookings/${bookingId}/status`, {
+      method: "PATCH",
+      headers: authHeaders(),
+      body: JSON.stringify({ status: status })
     });
+
+    if (handleUnauthorized(response)) return;
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Status konnte nicht geändert werden.");
+    }
+
+    await loadBookings();
+  } catch (error) {
+    alert(error.message);
+  }
 }
 
-homepageSettingsForm.addEventListener("submit", function (event) {
-  event.preventDefault();
+async function deleteBooking(bookingId) {
+  const confirmDelete = confirm("Möchten Sie diesen Termin wirklich löschen?");
 
-  const settingsData = {
-    appointmentLabel: appointmentLabelInput.value.trim(),
-    appointmentText: appointmentTextInput.value.trim(),
-    appointmentLinkText: appointmentLinkTextInput.value.trim()
-  };
+  if (!confirmDelete) return;
 
-  fetch(`${API_BASE_URL}/api/homepage-settings`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(settingsData)
-  })
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Failed to save homepage settings.");
-      }
-
-      return response.json();
-    })
-    .then(function (data) {
-      homepageSettingsMessage.textContent = data.message;
-    })
-    .catch(function (error) {
-      homepageSettingsMessage.textContent = error.message;
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/admin/bookings/${bookingId}`, {
+      method: "DELETE",
+      headers: authHeaders()
     });
-});
-function getStatusLabel(status) {
-  if (status === "confirmed") {
-    return "Bestätigt";
-  }
 
-  if (status === "completed") {
-    return "Abgeschlossen";
-  }
+    if (handleUnauthorized(response)) return;
 
-  if (status === "cancelled") {
-    return "Storniert";
-  }
+    const data = await response.json();
 
-  return status;
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Termin konnte nicht gelöscht werden.");
+    }
+
+    await loadBookings();
+  } catch (error) {
+    alert(error.message);
+  }
 }
-function updateDashboardStats(bookings) {
-  const total = bookings.length;
 
-  const confirmed = bookings.filter(function (booking) {
-    return booking.status === "confirmed";
-  }).length;
-
-  const completed = bookings.filter(function (booking) {
-    return booking.status === "completed";
-  }).length;
-
-  const cancelled = bookings.filter(function (booking) {
-    return booking.status === "cancelled";
-  }).length;
-
-  totalBookings.textContent = total;
-  confirmedBookings.textContent = confirmed;
-  completedBookings.textContent = completed;
-  cancelledBookings.textContent = cancelled;
-}
 function openEditBooking(bookingId) {
   const booking = allBookings.find(function (item) {
     return item.id === bookingId;
   });
 
-  if (!booking) {
-    return;
-  }
+  if (!booking) return;
 
   editBookingId.value = booking.id;
-  editPatientName.value = booking.patient_name;
-  editEmail.value = booking.email;
-  editPhone.value = booking.phone;
-  editService.value = booking.service;
-  editDoctor.value = booking.doctor;
-  editBookingDate.value = booking.booking_date;
-  editBookingTime.value = booking.booking_time;
-  editNotes.value = booking.notes || "";
+  editPatientName.value = safeText(booking.patient_name);
+  editEmail.value = safeText(booking.email);
+  editPhone.value = safeText(booking.phone);
+  editService.value = safeText(booking.service);
+  editBookingDate.value = formatDate(booking.booking_date);
+  editBookingTime.value = formatTime(booking.booking_time);
+  editNotes.value = safeText(booking.notes || "");
 
   editBookingSection.style.display = "block";
   editBookingMessage.textContent = "";
 
-  editBookingSection.scrollIntoView({
-    behavior: "smooth"
-  });
+  editBookingSection.scrollIntoView({ behavior: "smooth" });
 }
+
+function validateEditBookingForm() {
+  const values = [
+    editPatientName.value,
+    editEmail.value,
+    editPhone.value,
+    editService.value,
+    editBookingDate.value,
+    editBookingTime.value,
+    editNotes.value
+  ];
+
+  if (values.some(containsDangerousInput)) {
+    return "Ungültige Eingabe erkannt.";
+  }
+
+  if (editPatientName.value.trim().length < 2 || editPatientName.value.trim().length > 60) {
+    return "Der Name muss zwischen 2 und 60 Zeichen lang sein.";
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(editEmail.value.trim())) {
+    return "Bitte geben Sie eine gültige E-Mail-Adresse ein.";
+  }
+
+  if (!/^[0-9+\-\s()]{6,30}$/.test(editPhone.value.trim())) {
+    return "Bitte geben Sie eine gültige Telefonnummer ein.";
+  }
+
+  if (!editService.value || !editBookingDate.value || !editBookingTime.value) {
+    return "Bitte füllen Sie alle Pflichtfelder aus.";
+  }
+
+  if (editNotes.value.trim().length > 500) {
+    return "Der Hinweis darf maximal 500 Zeichen lang sein.";
+  }
+
+  return null;
+}
+
+editBookingForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const validationError = validateEditBookingForm();
+
+  if (validationError) {
+    setMessage(editBookingMessage, validationError, "error");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/admin/bookings/${editBookingId.value}`, {
+      method: "PUT",
+      headers: authHeaders(),
+      body: JSON.stringify({
+        patientName: editPatientName.value.trim(),
+        email: editEmail.value.trim().toLowerCase(),
+        phone: editPhone.value.trim(),
+        service: editService.value,
+        bookingDate: editBookingDate.value,
+        bookingTime: editBookingTime.value,
+        notes: editNotes.value.trim(),
+        website: ""
+      })
+    });
+
+    if (handleUnauthorized(response)) return;
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Termin konnte nicht geändert werden.");
+    }
+
+    setMessage(editBookingMessage, data.message, "success");
+
+    editBookingSection.style.display = "none";
+    editBookingForm.reset();
+
+    await loadBookings();
+  } catch (error) {
+    setMessage(editBookingMessage, error.message, "error");
+  }
+});
+
+async function loadHomepageSettings() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/homepage-settings`);
+    const data = await response.json();
+
+    if (!response.ok || !data.success || !data.settings) {
+      throw new Error("Einstellungen konnten nicht geladen werden.");
+    }
+
+    appointmentLabelInput.value = data.settings.appointment_label;
+    appointmentTextInput.value = data.settings.appointment_text;
+    appointmentLinkTextInput.value = data.settings.appointment_link_text;
+  } catch (error) {
+    setMessage(homepageSettingsMessage, error.message, "error");
+  }
+}
+
+homepageSettingsForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
+  clearHomepageSettingsMessage();
+
+  const values = [
+    appointmentLabelInput.value,
+    appointmentTextInput.value,
+    appointmentLinkTextInput.value
+  ];
+
+  if (values.some(containsDangerousInput)) {
+    setMessage(homepageSettingsMessage, "Ungültige Eingabe erkannt.", "error");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/homepage-settings`, {
+      method: "PUT",
+      headers: authHeaders(),
+      body: JSON.stringify({
+        appointmentLabel: appointmentLabelInput.value.trim(),
+        appointmentText: appointmentTextInput.value.trim(),
+        appointmentLinkText: appointmentLinkTextInput.value.trim()
+      })
+    });
+
+    if (handleUnauthorized(response)) return;
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Einstellungen konnten nicht gespeichert werden.");
+    }
+
+    setMessage(homepageSettingsMessage, data.message, "success");
+  } catch (error) {
+    setMessage(homepageSettingsMessage, error.message, "error");
+  }
+});
+
+adminTabs.forEach(function (tab) {
+  tab.addEventListener("click", function () {
+    adminTabs.forEach(function (item) {
+      item.classList.remove("active");
+    });
+
+    tab.classList.add("active");
+    currentTabStatus = tab.dataset.status;
+    statusFilter.value = "all";
+
+    applyFilters();
+  });
+});
 
 cancelEditBooking.addEventListener("click", function () {
   editBookingSection.style.display = "none";
   editBookingForm.reset();
 });
 
-editBookingForm.addEventListener("submit", function (event) {
-  event.preventDefault();
+refreshBookingsButton.addEventListener("click", loadBookings);
+adminSearch.addEventListener("input", applyFilters);
+statusFilter.addEventListener("change", applyFilters);
 
-  const bookingId = editBookingId.value;
+logoutButton.addEventListener("click", function () {
+  localStorage.removeItem("adminToken");
+  window.location.href = "/admin-login.html";
+});
 
-  const updatedBooking = {
-    patientName: editPatientName.value.trim(),
-    email: editEmail.value.trim(),
-    phone: editPhone.value.trim(),
-    service: editService.value,
-    doctor: editDoctor.value,
-    bookingDate: editBookingDate.value,
-    bookingTime: editBookingTime.value,
-    notes: editNotes.value.trim()
-  };
-
-  fetch(`${API_BASE_URL}/api/admin/bookings/${bookingId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(updatedBooking)
-  })
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Failed to update booking.");
-      }
-
-      return response.json();
-    })
-  .then(function (data) {
-  editBookingMessage.textContent = data.message;
-
-  editBookingSection.style.display = "none";
-  editBookingForm.reset();
-
+document.addEventListener("DOMContentLoaded", function () {
   loadBookings();
-
-  document.querySelector(".admin-table-wrapper").scrollIntoView({
-    behavior: "smooth"
-  });
-})
-    .catch(function (error) {
-      editBookingMessage.textContent = error.message;
-    });
+  loadHomepageSettings();
 });
