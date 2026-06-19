@@ -430,9 +430,11 @@ app.post("/api/admin/login", adminLoginLimiter, speedLimiter, async function (re
       token: token
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Login failed."
+  console.error("Admin login error:", error);
+
+  res.status(500).json({
+    success: false,
+    message: "Login failed."
     });
   }
 });
@@ -837,9 +839,11 @@ app.get("/api/homepage-settings", async function (req, res) {
       settings: result.rows[0] || null
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to load homepage settings."
+  console.error("Homepage settings load error:", error);
+
+  res.status(500).json({
+    success: false,
+    message: "Failed to load homepage settings."
     });
   }
 });
@@ -920,9 +924,11 @@ app.put("/api/homepage-settings", requireAdmin, async function (req, res) {
       settings: result.rows[0]
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to save homepage settings."
+  console.error("Homepage settings save error:", error);
+
+  res.status(500).json({
+    success: false,
+    message: "Failed to save homepage settings."
     });
   }
 });
