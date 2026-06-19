@@ -29,8 +29,11 @@ const pool = new Pool({
 });
 
 const allowedOrigins = [
-  "http://localhost:3000",
-  process.env.FRONTEND_URL
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5500",
+    "https://smilenova-dental-booking-system.onrender.com",
+    process.env.FRONTEND_URL
 ].filter(Boolean);
 
 app.use(
