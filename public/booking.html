@@ -8,143 +8,238 @@
 
   <meta
     name="description"
-    content="Buchen Sie online einen Termin bei der SmileNova Zahnarztpraxis."
+    content="Buchen Sie Ihren Termin online bei der SmileNova Zahnarztpraxis in Bad Kreuznach."
   />
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
 
+<body>
   <header class="site-header">
     <div class="container header-wrapper">
-      <a href="/" class="logo">
+      <a href="index.html" class="logo">
         Smile<span>Nova</span>
       </a>
 
       <nav class="nav" id="mainNav">
-        <a href="/">Startseite</a>
-        <a href="/#services">Leistungen</a>
-        <a href="/#doctors">Ärzte</a>
-        <a href="/#contact">Kontakt</a>
-        
+        <a href="index.html">Startseite</a>
+        <a href="index.html#services">Leistungen</a>
+        <a href="index.html#booking-system">Buchungssystem</a>
+        <a href="index.html#doctors">Team</a>
+        <a href="index.html#contact">Kontakt</a>
       </nav>
+
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
-  <span></span>
-  <span></span>
-  <span></span>
-</button>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </header>
 
   <main>
+    <section class="booking-showcase-hero">
+      <div class="hero-orb hero-orb-one"></div>
+      <div class="hero-orb hero-orb-two"></div>
 
-    <section class="booking-hero">
-      <div class="container">
-        <p class="section-label">Online-Terminbuchung</p>
-        <h1>Wählen Sie Ihren passenden Termin.</h1>
-        <p>
-Wählen Sie eine Behandlung und ein Datum.
-Danach werden automatisch die freien Uhrzeiten angezeigt.
-        </p>
+      <div class="container booking-hero-grid">
+        <div class="booking-hero-content reveal reveal-left">
+          <p class="hero-kicker">Online-Terminbuchung</p>
+
+          <h1>
+            Wählen Sie Behandlung, Datum und freie Uhrzeit in wenigen Schritten.
+          </h1>
+
+          <p>
+            Unser digitales Buchungssystem zeigt verfügbare Termine, sperrt
+            bereits belegte Zeiten und übermittelt Ihre Anfrage direkt an die
+            Praxisverwaltung.
+          </p>
+
+          <div class="booking-hero-points">
+            <span>✓ Freie Zeiten live prüfen</span>
+            <span>✓ Keine telefonische Warteschleife</span>
+            <span>✓ Sichere Terminübermittlung</span>
+          </div>
+        </div>
+
+        <aside class="booking-hero-panel reveal reveal-right">
+          <div class="panel-status">
+            <span class="status-dot"></span>
+            <strong>SmileNova Booking</strong>
+          </div>
+
+        <div class="mini-calendar" id="homepageMiniCalendar">
+  <div>
+    <span>--</span>
+    <strong>--</strong>
+  </div>
+
+  <div class="active">
+    <span>--</span>
+    <strong>--</strong>
+  </div>
+
+  <div>
+    <span>--</span>
+    <strong>--</strong>
+  </div>
+
+  <div>
+    <span>--</span>
+    <strong>--</strong>
+  </div>
+</div>
+
+   <div class="panel-appointment">
+    <span id="homepageAppointmentLabel">
+        Nächster freier Slot
+    </span>
+
+    <strong id="homepageAppointmentText">
+        Heute · 14:30 Uhr
+    </strong>
+
+    <p id="homepageAppointmentLinkText">
+        Wählen Sie unten Ihren passenden Termin.
+    </p>
+</div>
+        </aside>
       </div>
     </section>
 
     <section class="booking-section">
       <div class="container booking-layout">
+        <form class="booking-form reveal reveal-left" id="bookingForm">
+          <div class="booking-form-header">
+            <p class="section-label">Termin konfigurieren</p>
 
-        <form class="booking-form" id="bookingForm">
+            <h2>Ihre Buchung</h2>
 
-          <div class="form-section">
-            <h2>1. Behandlung auswählen</h2>
-
-            <label for="service">Behandlung</label>
-            <select id="service" name="service" required>
-              <option value="">Bitte auswählen</option>
-              <option value="Kontrolluntersuchung">Kontrolluntersuchung</option>
-              <option value="Professionelle Zahnreinigung">Professionelle Zahnreinigung</option>
-              <option value="Zahnaufhellung">Zahnaufhellung</option>
-              <option value="Notfallbehandlung">Notfallbehandlung</option>
-            </select>
+            <p>
+              Füllen Sie die Schritte aus. Die verfügbaren Uhrzeiten werden
+              automatisch nach Datumsauswahl angezeigt.
+            </p>
           </div>
 
-          
-          <div class="form-section">
-            <h2>2. Datum auswählen</h2>
+          <div class="booking-step form-section">
+            <div class="step-number">01</div>
 
-            <label for="bookingDate">Datum</label>
-            <input type="date" id="bookingDate" name="bookingDate" required />
-          </div>
+            <div class="step-content">
+              <h2>Behandlung auswählen</h2>
 
-          <div class="form-section">
-            <h2>3. Freie Uhrzeit auswählen</h2>
+              <label for="service">Behandlung</label>
 
-            <div class="slot-grid" id="slotGrid">
-              <p class="slot-placeholder">
-                Bitte wählen Sie zuerst ein Datum aus.
-              </p>
-            </div>
-
-            <input type="hidden" id="bookingTime" name="bookingTime" required />
-          </div>
-
-          <div class="form-section">
-            <h2>4. Patientendaten</h2>
-
-            <div class="form-grid">
-              <div>
-                <label for="patientName">Vollständiger Name</label>
-                <input
-                  type="text"
-                  id="patientName"
-                  name="patientName"
-                  placeholder="Max Mustermann"
-                  required
-                />
-              </div>
-
-              <div>
-                <label for="email">E-Mail</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="max@example.com"
-                  required
-                />
-              </div>
-
-              <div>
-                <label for="phone">Telefon</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  placeholder="+49 170 1234567"
-                  required
-                />
-              </div>
-
-              <div>
-                <label for="notes">Hinweis optional</label>
-                <input
-                  type="text"
-                  id="notes"
-                  name="notes"
-                  placeholder="z. B. akute Schmerzen"
-                />
-              </div>
+              <select id="service" name="service" required>
+                <option value="">Bitte auswählen</option>
+                <option value="Kontrolluntersuchung">Kontrolluntersuchung</option>
+                <option value="Professionelle Zahnreinigung">Professionelle Zahnreinigung</option>
+                <option value="Zahnaufhellung">Zahnaufhellung</option>
+                <option value="Notfallbehandlung">Notfallbehandlung</option>
+              </select>
             </div>
           </div>
-          <div style="display:none;">
-    <label for="website">Website</label>
-    <input
-        type="text"
-        id="website"
-        name="website"
-        autocomplete="off"
-        tabindex="-1"
-    />
-</div>
+
+          <div class="booking-step form-section">
+            <div class="step-number">02</div>
+
+            <div class="step-content">
+              <h2>Datum auswählen</h2>
+
+              <label for="bookingDate">Datum</label>
+              <input type="date" id="bookingDate" name="bookingDate" required />
+            </div>
+          </div>
+
+          <div class="booking-step form-section">
+            <div class="step-number">03</div>
+
+            <div class="step-content">
+              <h2>Freie Uhrzeit auswählen</h2>
+
+              <div class="slot-grid" id="slotGrid">
+                <p class="slot-placeholder">
+                  Bitte wählen Sie zuerst ein Datum aus.
+                </p>
+              </div>
+
+              <input type="hidden" id="bookingTime" name="bookingTime" required />
+            </div>
+          </div>
+
+          <div class="booking-step form-section">
+            <div class="step-number">04</div>
+
+            <div class="step-content">
+              <h2>Patientendaten</h2>
+
+              <div class="form-grid">
+                <div>
+                  <label for="patientName">Vollständiger Name</label>
+
+                  <input
+                    type="text"
+                    id="patientName"
+                    name="patientName"
+                    placeholder="Max Mustermann"
+                    minlength="2"
+                    maxlength="60"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="email">E-Mail</label>
+
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="max@example.com"
+                    maxlength="120"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="phone">Telefon</label>
+
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="+49 170 1234567"
+                    maxlength="30"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label for="notes">Hinweis optional</label>
+
+                  <input
+                    type="text"
+                    id="notes"
+                    name="notes"
+                    placeholder="z. B. akute Schmerzen"
+                    maxlength="500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="honeypot-field" style="display: none;">
+            <label for="website">Website</label>
+
+            <input
+              type="text"
+              id="website"
+              name="website"
+              autocomplete="off"
+              tabindex="-1"
+            />
+          </div>
 
           <button type="submit" class="btn btn-primary booking-submit">
             Termin verbindlich buchen
@@ -153,50 +248,86 @@ Danach werden automatisch die freien Uhrzeiten angezeigt.
           <p class="form-message" id="formMessage"></p>
         </form>
 
-        <aside class="booking-summary">
-          <h2>Ihre Terminübersicht</h2>
+        <aside class="booking-summary reveal reveal-right">
+          <div class="summary-card premium-summary-card">
+            <p class="section-label">Ihre Übersicht</p>
 
-          <div class="summary-item">
-            <span>Praxis</span>
-            <strong>SmileNova Zahnarztpraxis</strong>
+            <h2>SmileNova Zahnarztpraxis</h2>
+
+            <div class="summary-item">
+              <span>Adresse</span>
+              <strong>Muster Straße 24, 55543 Bad Kreuznach</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>Öffnungszeiten</span>
+              <strong>Mo–Fr, 08:00–17:00 Uhr</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>Telefon</span>
+              <strong>+49 671 123456</strong>
+            </div>
+
+            <div class="summary-note">
+              <strong>Hinweis:</strong>
+              Nach erfolgreicher Buchung wird der ausgewählte Termin gespeichert
+              und für weitere Buchungen gesperrt.
+            </div>
           </div>
 
-          <div class="summary-item">
-            <span>Adresse</span>
-            <strong>Muster Straße 24, 55543 Bad Kreuznach</strong>
-          </div>
+          <div class="summary-card process-card">
+            <h3>So läuft die Buchung ab</h3>
 
-          <div class="summary-item">
-            <span>Öffnungszeiten</span>
-            <strong>Mo–Fr, 08:00–17:00 Uhr</strong>
-          </div>
-
-          <div class="summary-note">
-            <strong>Hinweis:</strong>
-            Nach erfolgreicher Buchung wird der ausgewählte Termin in der
-            Datenbank gespeichert und ist für weitere Buchungen gesperrt.
+            <div class="process-list">
+              <p><span>01</span> Behandlung auswählen</p>
+              <p><span>02</span> Datum und freie Uhrzeit wählen</p>
+              <p><span>03</span> Kontaktdaten senden</p>
+              <p><span>04</span> Termin wird im Admin-System geprüft</p>
+            </div>
           </div>
         </aside>
-
       </div>
     </section>
 
+    <section class="section booking-trust-section">
+      <div class="container trust-grid">
+        <article class="trust-card reveal reveal-left">
+          <span>Schnell</span>
+          <h3>Termin ohne Anruf vorbereiten.</h3>
+          <p>
+            Patienten können direkt online eine passende Zeit auswählen.
+          </p>
+        </article>
+
+        <article class="trust-card reveal reveal-up">
+          <span>Digital</span>
+          <h3>Freie Slots werden geschützt.</h3>
+          <p>
+            Bereits gebuchte Zeiten werden automatisch deaktiviert.
+          </p>
+        </article>
+
+        <article class="trust-card reveal reveal-right">
+          <span>Verwaltbar</span>
+          <h3>Alle Anfragen im Admin-Bereich.</h3>
+          <p>
+            Das Praxisteam kann neue Termine prüfen, bearbeiten und sortieren.
+          </p>
+        </article>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-wrapper">
       <p>© 2026 SmileNova Zahnarztpraxis. Alle Rechte vorbehalten.</p>
-      <p>
-  Website entwickelt von
-  <a href="https://masoud-dev.de" target="_blank" rel="noopener noreferrer">
-    Masoud-DEV.de
-  </a>
-</p>
-      <a href="/">Zur Startseite</a>
+
+      <a href="index.html">Zurück zur Startseite</a>
     </div>
   </footer>
-
-  <script src="/js/main.js"></script>
-<script src="/js/booking.js"></script>
+<script src="js/main.js"></script>
+  <script src="js/booking.js"></script>
+  
 </body>
 </html>

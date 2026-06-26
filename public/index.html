@@ -1,34 +1,43 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>SmileNova Zahnarztpraxis | Moderne Zahnmedizin</title>
+  <title>SmileNova Zahnarztpraxis | Digitale Zahnmedizin</title>
 
   <meta
     name="description"
-    content="SmileNova Zahnarztpraxis in Bad Kreuznach bietet moderne Zahnmedizin, Prophylaxe, ästhetische Zahnbehandlungen und Online-Terminbuchung."
+    content="SmileNova Zahnarztpraxis in Bad Kreuznach: moderne Zahnmedizin, digitale Terminbuchung, Prophylaxe, ästhetische Behandlungen und Notfallversorgung."
   />
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
+  <div id="pageLoader" class="page-loader">
+    <div class="loader-logo">
+      <span>Smile</span>Nova
+    </div>
+
+    <div class="loader-line">
+      <div class="loader-progress"></div>
+    </div>
+  </div>
+
   <header class="site-header">
     <div class="container header-wrapper">
-      <a href="/" class="logo">
+      <a href="index.html" class="logo">
         Smile<span>Nova</span>
       </a>
 
       <nav class="nav" id="mainNav">
-        <a href="#about">Über uns</a>
-        <a href="#benefits">Vorteile</a>
+        <a href="#experience">Praxis</a>
         <a href="#services">Leistungen</a>
-        <a href="#doctors">Ärzte</a>
+        <a href="#booking-system">Buchungssystem</a>
+        <a href="#doctors">Team</a>
         <a href="#contact">Kontakt</a>
-        <a href="/booking.html" class="nav-btn">Termin buchen</a>
+        <a href="booking.html" class="nav-btn">Termin buchen</a>
       </nav>
 
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
@@ -40,28 +49,35 @@
   </header>
 
   <main>
-    <section class="hero premium-hero">
-      <div class="container premium-hero-wrapper">
-        <div class="premium-hero-content">
-          <div class="hero-badge">
-            <span></span>
-            Moderne Zahnarztpraxis in Bad Kreuznach
-          </div>
+    <section class="showcase-hero">
+      <div class="hero-orb hero-orb-one"></div>
+      <div class="hero-orb hero-orb-two"></div>
 
-          <h1>Moderne Zahnmedizin für ein gesundes, sicheres Lächeln.</h1>
+      <div class="container showcase-hero-grid">
+        <div class="showcase-hero-content reveal reveal-left">
+          <p class="hero-kicker">Digitale Zahnarztpraxis · Bad Kreuznach</p>
+
+          <h1>
+            Zahnmedizin, die modern wirkt und sich persönlich anfühlt.
+          </h1>
 
           <p class="hero-text">
-            SmileNova verbindet digitale Behandlungstechnik, persönliche Beratung
-            und eine ruhige Praxisatmosphäre. Buchen Sie Ihren Termin bequem online
-            und sehen Sie freie Zeiten direkt im System.
+            SmileNova verbindet klare Beratung, digitale Terminbuchung und
+            moderne Behandlungstechnik in einer ruhigen, hochwertigen
+            Praxisumgebung.
           </p>
 
           <div class="hero-actions">
-            <a href="/booking.html" class="btn btn-primary">Termin online buchen</a>
-            <a href="#services" class="btn btn-secondary">Leistungen ansehen</a>
+            <a href="booking.html" class="btn btn-primary">
+              Termin online buchen
+            </a>
+
+            <a href="#booking-system" class="btn btn-secondary">
+              System ansehen
+            </a>
           </div>
 
-          <div class="hero-trust-row">
+          <div class="hero-metrics">
             <div>
               <strong>12+</strong>
               <span>Jahre Erfahrung</span>
@@ -69,154 +85,219 @@
 
             <div>
               <strong>4.9</strong>
-              <span>Patientenbewertung</span>
+              <span>Bewertung</span>
             </div>
 
             <div>
               <strong>24h</strong>
-              <span>Notfall-Unterstützung</span>
+              <span>Notfallhilfe</span>
             </div>
           </div>
         </div>
 
-        <div class="premium-hero-visual">
-          <div class="clinic-card">
-            <div class="clinic-card-top">
-              <div class="clinic-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7.5 3C5.4 3 4 4.6 4 6.8c0 1.5.6 2.8 1.2 4 .5.9.8 1.8 1 2.8l.6 3.3C7.1 18.2 8 19 9 19c1.2 0 1.7-1.2 2.1-2.4l.4-1.4c.1-.5.8-.5 1 0l.4 1.4c.4 1.2.9 2.4 2.1 2.4 1 0 1.9-.8 2.2-2.1l.6-3.3c.2-1 .5-1.9 1-2.8.6-1.2 1.2-2.5 1.2-4C20 4.6 18.6 3 16.5 3c-1.2 0-2.1.4-2.8.8-.5.3-1 .5-1.7.5s-1.2-.2-1.7-.5C9.6 3.4 8.7 3 7.5 3Z" />
-                </svg>
+        <div class="hero-dashboard reveal reveal-right">
+          <div class="dashboard-glow"></div>
+
+          <div class="dashboard-card main-appointment-card">
+            <div class="dashboard-card-header">
+              <div>
+                <span class="status-dot"></span>
+                <p>SmileNova Live-System</p>
               </div>
 
-              <div>
-                <p>SmileNova Care</p>
-                <h3>Digitale Terminbuchung</h3>
-              </div>
+              <strong>Online</strong>
             </div>
 
             <div class="appointment-preview">
               <p id="homepageAppointmentLabel">Nächster freier Termin</p>
-              <strong id="homepageAppointmentText">Heute · 14:30 Uhr</strong>
-              <a id="homepageAppointmentLinkText" href="/booking.html">
+
+              <strong id="homepageAppointmentText">
+                Heute · 14:30 Uhr
+              </strong>
+
+              <a id="homepageAppointmentLinkText" href="booking.html">
                 Diesen Termin reservieren
               </a>
             </div>
+          </div>
 
-          
+          <div class="floating-card floating-card-one">
+            <span>01</span>
+            <strong>Freie Zeiten</strong>
+            <p>Automatisch geprüft</p>
+          </div>
+
+          <div class="floating-card floating-card-two">
+            <span>02</span>
+            <strong>Admin Panel</strong>
+            <p>Termine verwalten</p>
+          </div>
+
+          <div class="floating-card floating-card-three">
+            <span>03</span>
+            <strong>Patient Care</strong>
+            <p>Klare Abläufe</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="premium-benefits" id="benefits">
-      <div class="container premium-benefits-grid">
-        <article class="premium-benefit-card">
-          <div class="premium-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7.5 3C5.4 3 4 4.6 4 6.8c0 1.5.6 2.8 1.2 4 .5.9.8 1.8 1 2.8l.6 3.3C7.1 18.2 8 19 9 19c1.2 0 1.7-1.2 2.1-2.4l.4-1.4c.1-.5.8-.5 1 0l.4 1.4c.4 1.2.9 2.4 2.1 2.4 1 0 1.9-.8 2.2-2.1l.6-3.3c.2-1 .5-1.9 1-2.8.6-1.2 1.2-2.5 1.2-4C20 4.6 18.6 3 16.5 3c-1.2 0-2.1.4-2.8.8-.5.3-1 .5-1.7.5s-1.2-.2-1.7-.5C9.6 3.4 8.7 3 7.5 3Z" />
-            </svg>
-          </div>
+    <section class="section experience-section" id="experience">
+      <div class="container split-layout">
+        <div class="section-heading reveal reveal-left">
+          <p class="section-label">Praxis-Erlebnis</p>
 
-          <h3>Modernste Technik</h3>
-          <p>Digitale Abläufe und moderne Ausstattung für präzise Diagnosen und komfortable Behandlungen.</p>
-        </article>
-
-        <article class="premium-benefit-card">
-          <div class="premium-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 5a1 1 0 0 0-2 0v5c0 .3.1.5.3.7l3 3a1 1 0 0 0 1.4-1.4L13 11.6V7Z" />
-            </svg>
-          </div>
-
-          <h3>Kurze Wartezeiten</h3>
-          <p>Online-Termine, klare Zeitfenster und eine strukturierte Planung für einen angenehmen Besuch.</p>
-        </article>
-
-        <article class="premium-benefit-card">
-          <div class="premium-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4 0-7 2.1-7 5v1h14v-1c0-2.9-3-5-7-5Z" />
-            </svg>
-          </div>
-
-          <h3>Erfahrenes Team</h3>
-          <p>Freundliche Betreuung, verständliche Beratung und ein ruhiger Ablauf für Patienten jeden Alters.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section about" id="about">
-      <div class="container about-wrapper">
-        <div>
-          <p class="section-label">Über SmileNova</p>
-          <h2>Eine moderne Praxis mit Fokus auf Vertrauen, Komfort und klare Behandlungspläne.</h2>
+          <h2>
+            Ein ruhiger Besuch, ein klarer Ablauf und ein digitales System im Hintergrund.
+          </h2>
         </div>
 
-        <p>
-          Unsere Praxis verbindet moderne Zahntechnik mit persönlicher Betreuung.
-          Jede Behandlung beginnt mit einer verständlichen Beratung, transparenten Optionen
-          und einer ruhigen Atmosphäre. So wissen Patientinnen und Patienten immer,
-          welcher Behandlungsschritt als Nächstes kommt.
-        </p>
+        <div class="experience-panel reveal reveal-right">
+          <p>
+            Bei SmileNova beginnt jede Behandlung mit verständlicher Beratung.
+            Patientinnen und Patienten sehen klare Optionen, wissen den nächsten
+            Schritt und können ihren Termin direkt online buchen.
+          </p>
+
+          <div class="experience-tags">
+            <span>Digitale Planung</span>
+            <span>Moderne Technik</span>
+            <span>Transparente Beratung</span>
+            <span>Kurze Wartezeiten</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section services premium-services" id="services">
+    <section class="section service-showcase" id="services">
       <div class="container">
-        <div class="section-heading">
-          <p class="section-label">Unsere Leistungen</p>
-          <h2>Zahnbehandlungen, die sich an Ihren Bedürfnissen orientieren.</h2>
+        <div class="section-heading reveal reveal-up">
+          <p class="section-label">Leistungen</p>
+
+          <h2>
+            Hochwertige Zahnbehandlungen in einem modernen digitalen Workflow.
+          </h2>
         </div>
 
-        <div class="service-grid">
-          <article class="service-card premium-service-card">
+        <div class="service-grid premium-motion-grid">
+          <article class="service-card reveal reveal-up">
             <span>01</span>
             <h3>Kontrolluntersuchung</h3>
-            <p>Regelmäßige Untersuchungen, um Probleme frühzeitig zu erkennen und Ihre Zahngesundheit zu erhalten.</p>
+            <p>
+              Regelmäßige Untersuchung zur Früherkennung und langfristigen
+              Erhaltung der Zahngesundheit.
+            </p>
           </article>
 
-          <article class="service-card premium-service-card">
+          <article class="service-card reveal reveal-up">
             <span>02</span>
             <h3>Professionelle Zahnreinigung</h3>
-            <p>Gründliche Reinigung für gesunde Zähne, frischen Atem und ein gepflegtes Lächeln.</p>
+            <p>
+              Gründliche Reinigung für gesunde Zähne, frischen Atem und ein
+              gepflegtes Erscheinungsbild.
+            </p>
           </article>
 
-          <article class="service-card premium-service-card">
+          <article class="service-card reveal reveal-up">
             <span>03</span>
             <h3>Zahnaufhellung</h3>
-            <p>Sichere ästhetische Behandlungen für sichtbar hellere Zähne und mehr Selbstvertrauen.</p>
+            <p>
+              Sichere ästhetische Behandlung für sichtbar hellere Zähne und mehr
+              Selbstvertrauen.
+            </p>
           </article>
 
-          <article class="service-card premium-service-card">
+          <article class="service-card reveal reveal-up">
             <span>04</span>
             <h3>Notfallbehandlung</h3>
-            <p>Schnelle Unterstützung bei Schmerzen, abgebrochenen Zähnen oder akuten Beschwerden.</p>
+            <p>
+              Schnelle Hilfe bei akuten Schmerzen, abgebrochenen Zähnen oder
+              dringenden Beschwerden.
+            </p>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section system-section" id="booking-system">
+      <div class="container system-grid">
+        <div class="system-content reveal reveal-left">
+          <p class="section-label">Buchungssystem</p>
+
+          <h2>
+            Nicht nur eine Praxis-Website, sondern ein kleines digitales Termin-System.
+          </h2>
+
+          <p>
+            Die Website zeigt freie Termine, speichert Buchungen und gibt dem
+            Admin-Team einen eigenen Bereich zur Verwaltung der Anfragen.
+          </p>
+
+          <a href="booking.html" class="btn btn-primary">
+            Terminbuchung testen
+          </a>
+        </div>
+
+        <div class="system-timeline reveal reveal-right">
+          <div class="timeline-item">
+            <span>01</span>
+            <div>
+              <h3>Behandlung wählen</h3>
+              <p>Patienten wählen zuerst die gewünschte Leistung aus.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span>02</span>
+            <div>
+              <h3>Datum & Uhrzeit prüfen</h3>
+              <p>Freie Slots werden angezeigt, belegte Zeiten gesperrt.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span>03</span>
+            <div>
+              <h3>Termin speichern</h3>
+              <p>Die Buchung landet im Admin-Bereich der Praxis.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span>04</span>
+            <div>
+              <h3>Status verwalten</h3>
+              <p>Termine können bestätigt, bearbeitet oder storniert werden.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="section doctors" id="doctors">
       <div class="container">
-        <div class="section-heading">
-          <p class="section-label">Unser Team</p>
-          <h2>Erfahrene Zahnärzte mit einem patientenorientierten Ansatz.</h2>
+        <div class="section-heading reveal reveal-up">
+          <p class="section-label">Team</p>
+
+          <h2>
+            Ein erfahrenes Team mit Fokus auf Vertrauen, Ruhe und klare Kommunikation.
+          </h2>
         </div>
 
         <div class="doctor-grid">
-          <article class="team-card">
+          <article class="team-card reveal reveal-left">
             <div class="team-image">EC</div>
             <h3>Dr. Emily Carter</h3>
             <p>Ästhetische Zahnmedizin</p>
           </article>
 
-          <article class="team-card">
+          <article class="team-card reveal reveal-up">
             <div class="team-image">DW</div>
             <h3>Dr. Daniel Weber</h3>
             <p>Prophylaxe & Vorsorge</p>
           </article>
 
-          <article class="team-card">
+          <article class="team-card reveal reveal-right">
             <div class="team-image">SM</div>
             <h3>Dr. Sarah Miller</h3>
             <p>Notfallzahnmedizin</p>
@@ -225,58 +306,77 @@
       </div>
     </section>
 
-    <section class="premium-process-section">
-      <div class="container premium-process-box">
-        <div>
-          <p class="section-label">Digitaler Ablauf</p>
-          <h2>Von der Online-Buchung bis zur Behandlung – klar, schnell und transparent.</h2>
-        </div>
+    <section class="section trust-section">
+      <div class="container trust-grid">
+        <article class="trust-card reveal reveal-left">
+          <span>Für Patienten</span>
+          <h3>Schneller buchen, weniger warten.</h3>
+          <p>
+            Die Online-Buchung reduziert unnötige Telefonate und macht freie
+            Termine direkt sichtbar.
+          </p>
+        </article>
 
-        <div class="process-list">
-          <div>
-            <span>01</span>
-            <strong>Behandlung auswählen</strong>
-            <p>Wählen Sie die gewünschte Leistung und anschließend ein freies Datum mit passender Uhrzeit.</p>
-          </div>
+        <article class="trust-card reveal reveal-up">
+          <span>Für die Praxis</span>
+          <h3>Termine klar verwalten.</h3>
+          <p>
+            Der Admin-Bereich hilft dabei, neue Anfragen zu prüfen und nach
+            Status zu organisieren.
+          </p>
+        </article>
 
-          <div>
-            <span>02</span>
-            <strong>Freie Zeiten sehen</strong>
-            <p>Bereits gebuchte Termine werden automatisch gesperrt.</p>
-          </div>
-
-          <div>
-            <span>03</span>
-            <strong>Termin bestätigen</strong>
-            <p>Ihre Buchung wird gespeichert und im Admin-Bereich verwaltet.</p>
-          </div>
-        </div>
+        <article class="trust-card reveal reveal-right">
+          <span>Für das Portfolio</span>
+          <h3>Frontend und Backend kombiniert.</h3>
+          <p>
+            Dieses Projekt zeigt UI-Design, Formularlogik, Datenverwaltung und
+            ein vollständiges kleines Websystem.
+          </p>
+        </article>
       </div>
     </section>
 
     <section class="cta-section">
-      <div class="container cta-box">
+      <div class="container cta-box reveal reveal-up">
         <div>
-          <p class="section-label">Online-Terminbuchung</p>
-          <h2>Wählen Sie ein Datum, sehen Sie freie Zeiten und buchen Sie Ihren Termin online.</h2>
+          <p class="section-label">Bereit für Ihren Termin?</p>
+
+          <h2>
+            Wählen Sie online Ihre Behandlung, Ihr Datum und eine freie Uhrzeit.
+          </h2>
         </div>
 
-        <a href="booking.html" class="btn btn-primary">Jetzt Termin buchen</a>
+        <a href="booking.html" class="btn btn-primary">
+          Jetzt Termin buchen
+        </a>
       </div>
     </section>
 
     <section class="section contact" id="contact">
       <div class="container contact-grid">
-        <div>
+        <div class="reveal reveal-left">
           <p class="section-label">Kontakt</p>
-          <h2>Besuchen Sie unsere Praxis oder buchen Sie Ihren Termin direkt online.</h2>
+
+          <h2>
+            Besuchen Sie unsere Praxis oder buchen Sie Ihren Termin direkt online.
+          </h2>
+
+          <p>
+            SmileNova Zahnarztpraxis steht für moderne Behandlung, klare Abläufe
+            und eine angenehme Praxisatmosphäre.
+          </p>
         </div>
 
-        <div class="contact-card">
+        <div class="contact-card reveal reveal-right">
           <p><strong>Adresse:</strong> Muster Straße 24, 55543 Bad Kreuznach</p>
           <p><strong>Telefon:</strong> +49 671 123456</p>
           <p><strong>E-Mail:</strong> hello@smilenova.de</p>
           <p><strong>Öffnungszeiten:</strong> Mo–Fr, 08:00–17:00 Uhr</p>
+
+          <a href="booking.html" class="btn btn-secondary">
+            Online buchen
+          </a>
         </div>
       </div>
     </section>
@@ -284,18 +384,19 @@
 
   <footer class="site-footer">
     <div class="container footer-wrapper">
-      <p>© 2026 SmileNova Zahnarztpraxis. Alle Rechte vorbehalten.</p><br>
+      <p>© 2026 SmileNova Zahnarztpraxis. Alle Rechte vorbehalten.</p>
+
       <p>
-  Website entwickelt von
-  <a href="https://masoud-dev.de" target="_blank" rel="noopener noreferrer">
-    Masoud-DEV.de
-  </a>
-</p>
-      <a href="/booking.html">Termin buchen</a>
+        Website entwickelt von
+        <a href="https://masoud-dev.de" target="_blank" rel="noopener noreferrer">
+          Masoud-DEV.de
+        </a>
+      </p>
+
+      <a href="booking.html">Termin buchen</a>
     </div>
   </footer>
 
-  <script src="/js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
-

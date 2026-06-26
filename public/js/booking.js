@@ -1,4 +1,5 @@
 const bookingForm = document.getElementById("bookingForm");
+const revealElements = document.querySelectorAll(".reveal")
 const serviceInput = document.getElementById("service");
 const bookingDateInput = document.getElementById("bookingDate");
 const bookingTimeInput = document.getElementById("bookingTime");
@@ -213,6 +214,7 @@ function validateBookingForm() {
   return null;
 }
 
+
 function getBookingPayload() {
   return {
     patientName: normalizeText(patientNameInput.value),
@@ -266,5 +268,106 @@ bookingForm.addEventListener("submit", async function (event) {
     setMessage("Serververbindung fehlgeschlagen.", "error");
   }
 });
+/* =========================================================
+   PREMIUM INTERACTIONS
+   Reveal, Mouse Glow, Button Ripple, Card Tilt
+   ========================================================= */
+
+function initRevealAnimations() {
+    const revealElements = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver(
+        function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        {
+            threshold: 0.16,
+        }
+    );
+
+    revealElements.forEach(function (element) {
+        observer.observe(element);
+    });
+}
+
+function initMouseGlowCards() {
+    const cards = document.querySelectorAll(
+        ".service-card, .team-card, .trust-card, .contact-card, .summary-card, .timeline-item, .stat-card, .dashboard-card"
+    );
+
+    cards.forEach(function (card) {
+        card.addEventListener("mousemove", function (event) {
+            const rect = card.getBoundingClientRect();
+
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            card.style.setProperty("--mouse-x", `${x}px`);
+            card.style.setProperty("--mouse-y", `${y}px`);
+        });
+    });
+}
+
+function initButtonRipple() {
+    const buttons = document.querySelectorAll(".btn");
+
+    buttons.forEach(function (button) {
+        button.addEventListener("click", function (event) {
+            const ripple = document.createElement("span");
+            const rect = button.getBoundingClientRect();
+
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+
+            ripple.className = "btn-ripple";
+            ripple.style.width = `${size}px`;
+            ripple.style.height = `${size}px`;
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+
+            button.appendChild(ripple);
+
+            setTimeout(function () {
+                ripple.remove();
+            }, 650);
+        });
+    });
+}
+
+function initCardTilt() {
+    const cards = document.querySelectorAll(
+        ".service-card, .team-card, .trust-card, .dashboard-card"
+    );
+
+    cards.forEach(function (card) {
+        card.addEventListener("mousemove", function (event) {
+            const rect = card.getBoundingClientRect();
+
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            const rotateX = ((y / rect.height) - 0.5) * -8;
+            const rotateY = ((x / rect.width) - 0.5) * 8;
+
+            card.style.transform =
+                `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+        });
+
+        card.addEventListener("mouseleave", function () {
+            card.style.transform = "";
+        });
+    });
+}
+
+initRevealAnimations();
+initMouseGlowCards();
+initButtonRipple();
+initCardTilt();
 
 setMinDate();
